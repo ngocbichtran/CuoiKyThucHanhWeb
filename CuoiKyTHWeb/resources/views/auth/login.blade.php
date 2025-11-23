@@ -92,10 +92,12 @@
 
                         <!-- Google -->
                         <div class="col-6">
+                            <a href="{{ route('google.login') }}">
                             <button class="btn bg-light border rounded py-2 w-100 d-flex align-items-center justify-content-center shadow-sm">
                                 <img src="../assetAdmin/images/google.svg" class="me-2">
                                 <span>Google</span>
                             </button>
+                            </a>
                         </div>
 
                         <!-- Facebook -->

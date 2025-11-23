@@ -13,6 +13,17 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
+    'google' => [
+    'client_id'     => env('GOOGLE_CLIENT_ID'),
+    'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+    'redirect'      => env('GOOGLE_REDIRECT_URI'),
+
+    'guzzle' => [
+        // Sử dụng hàm base_path() để lấy đường dẫn tuyệt đối đến tệp CA
+        'verify' => storage_path('app/cacert.pem'), 
+        // Hoặc nếu bạn để ở thư mục gốc: base_path('cacert.pem'),
+    ],
+],
 
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
