@@ -21,5 +21,5 @@ Route::get('/dashboard', function () {
 
 
 //Route de dang nhap bang google
-Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.login');
-Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
+Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google.login');
+Route::get('auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
