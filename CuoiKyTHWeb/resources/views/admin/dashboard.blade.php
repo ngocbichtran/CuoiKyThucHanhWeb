@@ -3,7 +3,7 @@
 <div class="container py-5">
     <div class="row">
         <div class="col-md-3 col-sm-6 col-12 mb-3">
-            <div class="card text-white bg-primary">
+            <div class="card bg-primary">
                 <div class="card-header">ĐƠN HÀNG THÀNH CÔNG</div>
                 <div class="card-body">
                     <h5 class="card-title">2.680</h5>
@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="col-md-3 col-sm-6 col-12 mb-3">
-            <div class="card text-white bg-danger">
+            <div class="card bg-danger">
                 <div class="card-header">ĐANG XỬ LÝ</div>
                 <div class="card-body">
                     <h5 class="card-title">10</h5>

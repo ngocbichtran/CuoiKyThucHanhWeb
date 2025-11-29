@@ -4,116 +4,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/solid.min.css">
+
     <link rel="stylesheet" href="{{asset('assetAdmin/css/style.css')}}">
-    <title>Admintrator</title>
+
+    <title>Administrator</title>
+
+   
 </head>
 
 <body>
     <div id="warpper" class="nav-fixed">
-        <nav class="topnav shadow navbar-light bg-white d-flex">
-            <div class="navbar-brand"><a href="?">CAPYSHOP</a></div>
-            <div class="nav-right ">
-                <div class="btn-group mr-auto">
-                    <button type="button" class="btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="plus-icon fas fa-plus-circle"></i>
+
+        <nav class="topnav shadow navbar-light bg-white d-flex justify-content-between align-items-center px-3">
+
+            <div class="d-flex align-items-center">
+                <div class="navbar-brand mb-0 mr-3">
+                    <a href="?" class="font-weight-bold" style="font-size: 20px;">CAPYSHOP</a>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" title="Thêm mới">
+                        <i class="fas fa-plus-circle"></i> Tạo mới
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="?view=add-product">Thêm sản phẩm</a>
-
-
-                        <input type="text">
-                        <a class="dropdown-item" href="?view=list-order">Thêm đơn hàng</a>
+                        <a class="dropdown-item" href="{{route('admin.category.create')}}">Thêm danh mục</a>
+                        <a class="dropdown-item" href="{{route('admin.product.create')}}">Thêm sản phẩm</a>
+                        <a class="dropdown-item" href="{{route('admin.users.create')}}">Thêm tài khoản</a>
                     </div>
                 </div>
-                <div class="btn-group">
-                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{Auth::user()->name}}
+            </div>
+
+
+            <div class="d-flex align-items-center">
+
+                <div class="d-flex align-items-center mx-2" style="gap: 8px;">
+                    <img src="{{asset('assetAdmin/images/capybaibien.png')}}" style="height:40px; width:40px; object-fit: cover; transform:scaleX(-1);">
+                    <img src="{{asset('assetAdmin/images/capybaibien2.png')}}" style="height:40px; width:40px; object-fit: cover;">
+                </div>
+
+                <div class="btn-group ml-3">
+                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                        <i class="fas fa-user-circle mr-1"></i> ok
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">Tài khoản</a>
-                        <a class="dropdown-item" href="{{route('logout')}}" >
-                       <a class="dropdown-item" href="{{ route('logout') }}"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                Đăng Xuất
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
+                        <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i> Tài khoản</a>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Đăng xuất
+                        </a>
                     </div>
                 </div>
-            </div>
-        </nav>
-        <!-- end nav  -->
-        <div id="page-body" class="d-flex">
-            <div id="sidebar" class="bg-white">
-                <ul id="sidebar-menu">
-                    <li class="nav-link">
-                        <a href="?view=dashboard">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
-                            </div>
-                            Trang Chủ
-                        </a>
-                    </li>
-                    <li class="nav-link">
-                        <a href="?view=list-product">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
-                            </div>
-                            Sản phẩm
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
-                        <ul class="sub-menu">
-                            <li><a href="?view=add-product">Thêm mới</a></li>
-                            <li><a href="?view=list-product">Danh sách</a></li>
-                            <li><a href="?view=cat-product">Danh mục</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-link">
-                        <a href="?view=list-order">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
-                            </div>
-                            Bán hàng
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
-                        <ul class="sub-menu">
-                            <li><a href="?view=list-order">Đơn hàng</a></li>
-                        </ul>
-                    </li>
-                    <!-- <li class="nav-link">
-                        <a href="?view=list-user">
-                            <div class="nav-link-icon d-inline-flex">
-                                <i class="far fa-folder"></i>
-                            </div>
-                            Users
-                        </a>
-                        <i class="arrow fas fa-angle-right"></i>
 
-                        <ul class="sub-menu">
-                            <li><a href="?view=add-user">Thêm mới</a></li>
-                            <li><a href="?view=list-user">Danh sách</a></li>
-                        </ul>
-                    </li> -->
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+
+            </div>
+
+        </nav>
+        <div class="d-flex">
+
+            <div id="sidebar">
+                <ul id="sidebar-menu">
+
+                    <li class="pc-item">
+                        <a href="{{ route('dashboard') }}"
+                        class="pc-link {{ Route::is('dashboard') ? 'active' : '' }}">
+                            <i class="fas fa-home"></i>
+                            Trang chủ
+                        </a>
+                    </li>
+
+                    <li class="pc-item">
+                        <a href="{{ route('admin.category.index') }}"
+                        class="pc-link {{ Route::is('admin.category.*') ? 'active' : '' }}">
+                            <i class="fas fa-tags"></i> Danh sách loại
+                        </a>
+                    </li>
+
+                    <li class="pc-item">
+                        <a href="{{ route('admin.product.index') }}"
+                        class="pc-link {{ Route::is('admin.product.*') ? 'active' : '' }}">
+                            <i class="fas fa-box"></i> Danh sách sản phẩm
+                        </a>
+                    </li>
+
+                    <li class="pc-item">
+                        <a class="pc-link {{ Route::is('admin.order.*') ? 'active' : '' }}" href="#">
+                            <i class="fas fa-shopping-cart"></i> Đơn hàng
+                        </a>
+                    </li>
+
+                    <li class="pc-item">
+                        <a href="{{ route('admin.users.index') }}"
+                        class="pc-link {{ Route::is('admin.users.*') ? 'active' : '' }}">
+                            <i class="fas fa-users"></i> Danh sách tài khoản
+                        </a>
+                    </li>
+
                 </ul>
             </div>
-            <div id="wp-content">
-              @yield('content')
+
+            <div class="flex-fill">
+                @yield('content')
             </div>
+
         </div>
-
-
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="{{asset('assetAdmin/js/app.js')}}"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    document.documentElement.setAttribute(
+        "data-theme",
+        localStorage.getItem("theme") ?? "light"
+    );
+</script>
 </body>
 
 </html>

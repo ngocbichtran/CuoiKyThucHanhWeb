@@ -1,7 +1,10 @@
 <?php
 use App\Http\Controllers\GoogleController; //Route de dang nhap bang google
 use Illuminate\Support\Facades\Route;
-
+use App\Models\Category;
+use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\CategoryController;
 // Route chính
 Route::get('/', function () {
     return view('admin/dashboard');
@@ -23,3 +26,14 @@ Route::get('/dashboard', function () {
 //Route de dang nhap bang google
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.login');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
+
+
+
+//Hiện database
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('users', UserController::class);
+    Route::resource('product', ProductController::class);
+    Route::resource('category', CategoryController::class);
+});
+
+

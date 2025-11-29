@@ -86,24 +86,14 @@
                     </div>
 
                     <!-- Social Buttons -->
-                    <div class="row g-3 mb-3">
-
-                        <!-- Google -->
-                        <div class="col-6">
-                            <button class="btn bg-light border rounded py-2 w-100 d-flex align-items-center justify-content-center shadow-sm">
-                                <img src="../assetAdmin/images/google.svg" class="me-2">
+                     <div class="row g-3 mb-3">
+                        <div class="col-8 mx-auto text-center">
+                            <a href="{{ route('google.login') }}" 
+                            class="btn bg-light border rounded py-2 w-100 d-flex align-items-center justify-content-center shadow-sm">
+                                <img src="{{ asset('assetAdmin/images/google.svg') }}" class="me-2" style="width: 20px;">
                                 <span>Google</span>
-                            </button>
+                            </a>
                         </div>
-
-                        <!-- Facebook -->
-                        <div class="col-6">
-                            <button class="btn bg-light border rounded py-2 w-100 d-flex align-items-center justify-content-center shadow-sm">
-                                <img src="../assetAdmin/images/facebook.svg" class="me-2">
-                                <span>Facebook</span>
-                            </button>
-                        </div>
-
                     </div>
 
                 </div> <!-- card-body -->
