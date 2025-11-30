@@ -1,6 +1,6 @@
 @extends('layouts/admin')
 @section('content')
-<div style="display: flex; align-items: center; margin-bottom: 15px;">
+<div style="display: flex; align-items: center; margin-bottom: 25px;">
     <!-- Thông báo -->
     <div style=" margin-left:50px;">
         @if(session('success'))
@@ -20,8 +20,8 @@
 
 <form method="GET" action="{{ route('admin.category.index') }}" class="d-flex mb-3">
     <input type="text" name="keyword" value="{{ $keyword ?? '' }}" 
-        class="form-control me-2" placeholder="Tìm kiếm...">
-    <button class="btn btn-primary">Tìm</button>
+        class="form-control me-2" placeholder="Tìm kiếm..." style="width:200px; margin-left:110px;">
+   <button class="btn btn-primary" style="margin-left:10px;">Tìm</button>
 </form>
 @if($keyword && $users->total() == 0)
     <div class="alert alert-warning">
@@ -32,7 +32,7 @@
     <div class="container" style="margin-right:0px; ">
             <div class="table-responsive" style="display: flex; justify-content: center; margin-top:50px;">
                <table class="table table-bordered table-hover text-center align-middle mb-0"
-                    style="width: 90%; table-layout: fixed; border:2px solid;">
+                    style="width: 95%; table-layout: fixed;">
 
                     <thead class="text-center">
                         <tr>
@@ -64,9 +64,9 @@
 
                                 <td>
                                     @if($category->ACTIVE_FLAG == 1)
-                                        <span class="badge bg-success">Đã bày bán</span>
+                                        <span class="badge bg-success" style="color:white;">Đã bày bán</span>
                                     @else
-                                        <span class="badge bg-secondary">Chưa bày bán</span>
+                                        <span class="badge bg-secondary" style="color:white;">Chưa bày bán</span>
                                     @endif
                                 </td>
 

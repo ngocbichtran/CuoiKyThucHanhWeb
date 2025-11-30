@@ -1,9 +1,8 @@
 @extends('layouts/admin')
 
 @section('content')
-<div class="container" style="margin-left: 305px; padding-top: 120px;">
-    <form action="{{ route('admin.category.store') }}" method="POST" class="form-inline"
-          style="max-width: 400px; margin-left: 200px;">
+<div class="container">
+    <form action="{{ route('admin.category.store') }}" method="POST" style="display: flex; flex-direction: column; max-width:400px;  margin: 0 auto;">
         @csrf
 
         <div class="form-group mb-3">
@@ -27,9 +26,11 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-success">Save</button>
+      <div style="display: flex; justify-content: center; width: 100%;">
+    <button type="submit" class="btn btn-success" style="width:200px;">Save</button>
+    </div>
 
     </form>
-</div>
+</div>  
 
 @endsection

@@ -6,8 +6,8 @@
             <!-- Tìm kiếm -->
             <form method="GET" action="{{ route('admin.product.index') }}" class="d-flex mb-3">
                 <input type="text" name="keyword" value="{{ $keyword ?? '' }}" 
-                    class="form-control me-2" placeholder="Tìm kiếm...">
-                <button class="btn btn-primary">Tìm</button>
+                    class="form-control me-2" placeholder="Tìm kiếm..." style="width:200px;">
+                <button class="btn btn-primary" style="margin-left:10px;">Tìm</button>
             </form>
             @if($keyword && $product->total() == 0)
                     <div class="alert alert-warning">
@@ -17,7 +17,7 @@
 
             <!-- Form dữ liệu -->
         <div class="table-responsive" style="display: flex; justify-content: center; margin-top:50px;">
-            <table class="table table-bordered table-hover text-center align-middle mb-0" style="width: 100%; margin: 0; table-layout: fixed;border-collapse: collapse;border-color:black;">
+            <table class="table table-bordered table-hover text-center align-middle " style="width: 100%; margin: 0; table-layout: fixed;border-collapse: collapse;border-color:black; ">
                     <thead style="text-align: center;">
                     <tr class="text-white">
                         <th scope="col" style="width: 6%; text-align:center;">STT</th>
@@ -47,13 +47,13 @@
                                     <td>{{ $product->NAME }}</td>
                                     <td>{{ $product->DESCRIPTION }}</td>
                                     <td>
-                                        <img src="{{ asset($product->IMG_URL) }}" alt="{{ $product->NAME }}" width="80">
+                                        <img src="{{ asset($product->IMG_URL) }}" alt="{{ $product->NAME }}" style="width: 50px; height: 50px;">
                                     </td>
                                     <td>
                                         @if($product->ACTIVE_FLAG == 1)
-                                            <span class="badge bg-success">Đã bày bán</span>
+                                            <span class="badge bg-success" style="color:white;">Đã bày bán</span>
                                         @else
-                                            <span class="badge bg-secondary">Chưa bày bán</span>
+                                            <span class="badge bg-secondary"  style="color:white;">Chưa bày bán</span>
                                         @endif
                                     </td>
                                     <td>{{ $product->CREATE_DATE ? \Carbon\Carbon::parse($product->CREATE_DATE)->format('d/m/Y') : '-' }}</td>

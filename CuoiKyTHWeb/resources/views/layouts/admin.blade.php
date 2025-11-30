@@ -18,7 +18,7 @@
 <body>
     <div id="warpper" class="nav-fixed">
 
-        <nav class="topnav shadow navbar-light bg-white d-flex justify-content-between align-items-center px-3">
+        <nav class="topnav shadow d-flex justify-content-between align-items-center px-3">
 
             <div class="d-flex align-items-center">
                 <div class="navbar-brand mb-0 mr-3">
@@ -39,12 +39,6 @@
 
 
             <div class="d-flex align-items-center">
-
-                <div class="d-flex align-items-center mx-2" style="gap: 8px;">
-                    <img src="{{asset('assetAdmin/images/capybaibien.png')}}" style="height:40px; width:40px; object-fit: cover; transform:scaleX(-1);">
-                    <img src="{{asset('assetAdmin/images/capybaibien2.png')}}" style="height:40px; width:40px; object-fit: cover;">
-                </div>
-
                 <div class="btn-group ml-3">
                     <button class="btn dropdown-toggle" data-toggle="dropdown">
                         <i class="fas fa-user-circle mr-1"></i> ok

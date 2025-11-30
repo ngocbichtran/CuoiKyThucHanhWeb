@@ -196,15 +196,20 @@ ul {
     border: 1px solid var(--border);
     background: var(--card-bg);
 }
-
+.table td, .table th {
+    /* Đặt lại thuộc tính vertical-align thành căn giữa */
+    vertical-align: middle !important; 
+}
 .card-header {
-    background: var(--primary);
+    background: green;
     color: #fff;
     font-weight: 600;
     text-transform: uppercase;
     border-radius: 12px 12px 0 0 !important;
 }
-
+.table-bordered{
+    border-color: white;
+}
 .table thead {
     background: var(--primary);
     color: #ffffff;

@@ -1,110 +1,201 @@
 @extends('layouts.admin')
+
 @section('content')
 <div class="container py-5">
-    <div class="row">
-        <div class="col-md-3 col-sm-6 col-12 mb-3">
-            <div class="card bg-primary">
-                <div class="card-header">ĐƠN HÀNG THÀNH CÔNG</div>
+    <h3 class="mb-4 fw-bold text-dark">Bảng Điều Khiển Tổng Quan (Tĩnh)</h3>
+
+    <!-- Khu vực 1: ANALYTICS - Các Chỉ Số Chính -->
+    <div class="row mb-5">
+        
+        <!-- Tổng Đơn Hàng Thành Công -->
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-3">
+            <div class="card bg-primary text-white shadow-sm h-100">
+                <div class="card-header border-0 fw-bold">ĐƠN HÀNG THÀNH CÔNG</div>
                 <div class="card-body">
-                    <h5 class="card-title">2.680</h5>
+                    <h4 class="card-title fw-bold">2.680</h4>
                     <p class="card-text">Đơn hàng giao dịch thành công</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-12 mb-3">
-            <div class="card bg-danger">
-                <div class="card-header">ĐANG XỬ LÝ</div>
+
+        <!-- Tổng Sản Phẩm Đang Bán -->
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-3">
+            <div class="card bg-success text-white shadow-sm h-100">
+                <div class="card-header border-0 fw-bold">TỔNG SẢN PHẨM</div>
                 <div class="card-body">
-                    <h5 class="card-title">10</h5>
-                    <p class="card-text">Số lượng đơn hàng đang xử lý</p>
+                    <h4 class="card-title fw-bold">580</h4>
+                    <p class="card-text">Tổng số sản phẩm đang bày bán</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-12 mb-3">
-            <div class="card text-white bg-success">
-                <div class="card-header">DOANH SỐ</div>
+
+        <!-- Tổng Doanh Số -->
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-3">
+            <div class="card bg-warning text-dark shadow-sm h-100">
+                <div class="card-header border-0 fw-bold">DOANH SỐ THÁNG</div>
                 <div class="card-body">
-                    <h5 class="card-title">2.5 tỷ</h5>
-                    <p class="card-text">Doanh số hệ thống</p>
+                    <h4 class="card-title fw-bold">500 Triệu</h4>
+                    <p class="card-text">Doanh số đạt được tháng này</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-12 mb-3">
-            <div class="card text-white bg-dark">
-                <div class="card-header">ĐƠN HÀNG HỦY</div>
+        
+        <!-- Tổng Người Dùng Mới -->
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-3">
+            <div class="card bg-info text-white shadow-sm h-100">
+                <div class="card-header border-0 fw-bold">NGƯỜI DÙNG MỚI</div>
                 <div class="card-body">
-                    <h5 class="card-title">125</h5>
-                    <p class="card-text">Số đơn bị hủy trong hệ thống</p>
+                    <h4 class="card-title fw-bold">125</h4>
+                    <p class="card-text">Người dùng đăng ký trong 30 ngày</p>
                 </div>
             </div>
         </div>
     </div>
     <!-- end analytic  -->
-    <div class="card">
-        <div class="card-header fw-bold">
-            ĐƠN HÀNG MỚI
-        </div>
-        <div class="card-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Mã</th>
-                        <th>Khách hàng</th>
-                        <th>Sản phẩm</th>
-                        <th>Số lượng</th>
-                        <th>Giá trị</th>
-                        <th>Trạng thái</th>
-                        <th>Thời gian</th>
-                        <th>Tác vụ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>1</th>
-                        <td>1212</td>
-                        <td>
-                            Phan Văn Cương <br>
-                            0988859692
-                        </td>
-                        <td><a href="#">Samsung Galaxy A51 (8GB/128GB)</a></td>
-                        <td>1</td>
-                        <td>7.790.000₫</td>
-                        <td><span class="badge bg-warning text-dark">Đang xử lý</span></td>
-                        <td>26/06/2020 14:00</td>
-                        <td>
-                            <a href="#" class="btn btn-success btn-sm rounded-0 text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm rounded-0 text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="fa fa-trash"></i></a>
-                        </td>
-                    </tr>
-                    <!-- Các dòng khác tương tự -->
-                </tbody>
-            </table>
 
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">«</span>
-                        </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">»</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+    <div class="row">
+        <!-- Bảng 1: ĐƠN HÀNG MỚI NHẤT -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header fw-bold bg-light">
+                    ĐƠN HÀNG MỚI CẦN XỬ LÝ
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover mb-0 align-middle">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;">Mã</th>
+                                    <th style="width: 35%;">Khách hàng</th>
+                                    <th style="width: 25%;">Giá trị</th>
+                                    <th style="width: 30%;">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{-- Dữ liệu tĩnh cho 5 đơn hàng mới nhất --}}
+                                <tr>
+                                    <td>#1215</td>
+                                    <td>
+                                        <strong>Nguyễn A</strong> <br>
+                                        <small class="text-muted">098xxxxxx</small>
+                                    </td>
+                                    <td>10.500.000₫</td>
+                                    <td>
+                                        <span class="badge bg-warning text-dark">Đang xử lý</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1214</td>
+                                    <td>
+                                        <strong>Trần B</strong> <br>
+                                        <small class="text-muted">097yyyyyy</small>
+                                    </td>
+                                    <td>2.150.000₫</td>
+                                    <td>
+                                        <span class="badge bg-warning text-dark">Đang xử lý</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1213</td>
+                                    <td>
+                                        <strong>Phạm C</strong> <br>
+                                        <small class="text-muted">090zzzzzz</small>
+                                    </td>
+                                    <td>5.600.000₫</td>
+                                    <td>
+                                        <span class="badge bg-warning text-dark">Đang xử lý</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1212</td>
+                                    <td>
+                                        <strong>Lê D</strong> <br>
+                                        <small class="text-muted">091aaaaaa</small>
+                                    </td>
+                                    <td>1.200.000₫</td>
+                                    <td>
+                                        <span class="badge bg-success">Đã giao</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1211</td>
+                                    <td>
+                                        <strong>Huỳnh E</strong> <br>
+                                        <small class="text-muted">092bbbbbb</small>
+                                    </td>
+                                    <td>8.990.000₫</td>
+                                    <td>
+                                        <span class="badge bg-danger">Đã hủy</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <a href="#" class="btn btn-sm btn-outline-secondary">Xem tất cả đơn hàng</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bảng 2: SẢN PHẨM MỚI NHẤT -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header fw-bold bg-light">
+                    SẢN PHẨM MỚI ĐƯỢC THÊM
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover mb-0 align-middle">
+                            <thead>
+                                <tr>
+                                    <th style="width: 15%;">Mã SP</th>
+                                    <th style="width: 45%;">Tên sản phẩm</th>
+                                    <th style="width: 20%;">Loại</th>
+                                    <th style="width: 20%;">Giá</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{-- Dữ liệu tĩnh cho 5 sản phẩm mới nhất --}}
+                                <tr>
+                                    <td>#P005</td>
+                                    <td><a href="#" class="text-decoration-none">Tai nghe Bluetooth X10</a></td>
+                                    <td>Phụ kiện</td>
+                                    <td>850.000₫</td>
+                                </tr>
+                                <tr>
+                                    <td>#P004</td>
+                                    <td><a href="#" class="text-decoration-none">Samsung Galaxy S23</a></td>
+                                    <td>Điện thoại</td>
+                                    <td>15.990.000₫</td>
+                                </tr>
+                                <tr>
+                                    <td>#P003</td>
+                                    <td><a href="#" class="text-decoration-none">Ốp lưng IPhone 14</a></td>
+                                    <td>Phụ kiện</td>
+                                    <td>120.000₫</td>
+                                </tr>
+                                <tr>
+                                    <td>#P002</td>
+                                    <td><a href="#" class="text-decoration-none">MacBook Pro M3</a></td>
+                                    <td>Laptop</td>
+                                    <td>35.000.000₫</td>
+                                </tr>
+                                <tr>
+                                    <td>#P001</td>
+                                    <td><a href="#" class="text-decoration-none">Chuột không dây Logitech</a></td>
+                                    <td>Phụ kiện</td>
+                                    <td>450.000₫</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <a href="#" class="btn btn-sm btn-outline-secondary">Xem tất cả sản phẩm</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-<script>
-    // Bootstrap 5 Tooltip
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-</script>
 @endsection

@@ -7,8 +7,8 @@
     <div class="text-center rounded">
         <form method="GET" action="{{ route('admin.users.index') }}" class="d-flex">
             <input type="text" name="keyword" value="{{ $keyword ?? '' }}" 
-                class="form-control" placeholder="Tìm kiếm...">
-            <button class="btn btn-primary">Tìm</button>
+                class="form-control" placeholder="Tìm kiếm..." style="width:200px; margin-left:55px;">
+            <button class="btn btn-primary" style="margin-left:10px;">Tìm</button>
         </form>
         @if($keyword && $users->total() == 0)
             <div class="alert alert-warning">
@@ -20,7 +20,7 @@
         <div >
 
             <!-- Khung cố định chiều cao của bảng -->
-            <div style="min-height: 350px; width: 90%; margin-left: 5%; margin-top:15px;">
+            <div style="min-height: 450px; width: 90%; margin-left: 5%; margin-top:15px;">
                 <table class="table table-bordered table-hover text-center align-middle mb-0" 
                        style="table-layout: fixed;">
 
@@ -71,15 +71,6 @@
             <div class="d-flex justify-content-center mt-4 ">
                 {{ $users->links('pagination::bootstrap-5') }}
             </div>
-            <!-- <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-            </nav> -->
         </div>
     </div>
 </div>
