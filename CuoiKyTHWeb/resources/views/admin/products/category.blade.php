@@ -10,22 +10,23 @@
 
         <div class="d-flex">
             <a href="{{ route('admin.category.index', ['status' => 'active']) }}"
-                class="btn btn-outline-primary me-2 {{ $status != 'trash' ? 'active' : '' }}">
-                🟢 Đang bày bán ({{ $count['active'] }})
+                class="btn btn-outline-primary me-2 {{ $status != 'trash' ? 'active' : '' }}"
+                style="margin-right:10px;">
+                Đang bày bán ({{ $count['active'] }})
             </a>
 
             <a href="{{ route('admin.category.index', ['status' => 'trash']) }}"
                 class="btn btn-outline-danger {{ $status == 'trash' ? 'active' : '' }}">
-                🔴 Thùng rác ({{ $count['trash'] }})
+                Thùng rác ({{ $count['trash'] }})
             </a>
         </div>
     </div>
-
+<div class="d-flex">
     <!-- Tìm kiếm -->
     <form method="GET" action="{{ route('admin.category.index') }}" class="d-flex mb-3">
         <input type="text" name="keyword" value="{{ $keyword ?? '' }}"
             class="form-control" placeholder="Tìm kiếm..." style="width:230px;">
-        <button class="btn btn-primary ms-2">Tìm</button>
+        <button class="btn btn-primary ms-2" style="margin-right:10px;">Tìm</button>
     </form>
 
     <!-- Thông báo -->
@@ -54,7 +55,7 @@
             </div>
         @endif
     </div>
-
+</div>
     <!-- Form hành động hàng loạt -->
     <form action="{{ route('admin.category.action') }}" method="POST">
         @csrf
@@ -63,11 +64,11 @@
 
             @if($status != 'trash')
                 <button name="act" value="delete" class="btn btn-danger me-2">
-                    🗑 Xóa tạm thời
+                    Xóa tạm thời
                 </button>
             @else
                 <button name="act" value="restore" class="btn btn-success me-2">
-                    ♻ Khôi phục
+                    Khôi phục
                 </button>
             @endif
 
@@ -76,7 +77,7 @@
         <!-- Bảng -->
         <div class="table-responsive d-flex justify-content-center mt-3">
             <table class="table table-bordered table-hover text-center align-middle mb-0"
-                style="width: 95%; table-layout: fixed;">
+                style="width: 100%; table-layout: fixed;">
 
                 <thead>
                     <tr class="fw-bold text-dark">

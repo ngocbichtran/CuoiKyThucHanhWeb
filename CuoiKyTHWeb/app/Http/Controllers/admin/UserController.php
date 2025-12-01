@@ -39,7 +39,7 @@ class UserController extends Controller
         }
         
         // 5. Phân trang và thực thi query
-        $users = $query->paginate(6)->withQueryString(); 
+        $users = $query->paginate(5)->withQueryString(); 
         
         // 6. Tính toán đếm trạng thái: Tối ưu hóa bằng các phương thức tường minh
         $count_user_active = User::withoutTrashed()->count(); // Đếm ACTIVE (không bao gồm trash)

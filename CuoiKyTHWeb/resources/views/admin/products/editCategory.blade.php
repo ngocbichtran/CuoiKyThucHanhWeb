@@ -1,13 +1,12 @@
 @extends('layouts/admin')
 
 @section('content')
-<div class="container" style="margin-left: 305px; padding-top: 120px;">
+<div class="container" style="padding-top: 120px;">
 
     <form 
         action="{{ route('admin.category.update', $category->ID) }}" 
         method="POST"
-        class="form-inline"
-        style="max-width: 400px; margin-left: 200px;"
+      style=" margin:auto; width:300px;"
     >
         @csrf
         @method('PUT')

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container py-5">
-    <h3 class="mb-4 fw-bold text-dark">Bảng Điều Khiển Tổng Quan (Tĩnh)</h3>
+    <h3 class="mb-4 fw-bold text-dark">Bảng điều khiển tổng quan</h3>
 
     <!-- Khu vực 1: ANALYTICS - Các Chỉ Số Chính -->
     <div class="row mb-5">

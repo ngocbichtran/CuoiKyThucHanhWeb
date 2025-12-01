@@ -12,12 +12,14 @@
 
             <div class="d-flex">
                 <a href="{{ route('admin.orders.index', ['delivery' => 'all']) }}"
-                   class="btn btn-outline-secondary me-2 {{ $delivery == 'all' ? 'active' : '' }}">
+                   class="btn btn-outline-secondary me-2 {{ $delivery == 'all' ? 'active' : '' }}" 
+                   >
                     Tất cả ({{ $count['pending'] + $count['delivered'] }})
                 </a>
 
                 <a href="{{ route('admin.orders.index', ['delivery' => 'delivered']) }}"
-                   class="btn btn-outline-success me-2 {{ $delivery == 'delivered' ? 'active' : '' }}">
+                   class="btn btn-outline-success me-2 {{ $delivery == 'delivered' ? 'active' : '' }}"
+                   style="margin: 0 20px;">
                     Đã giao ({{ $count['delivered'] }})
                 </a>
 
@@ -63,21 +65,21 @@
         </div>
 
         <!-- Bảng đơn hàng -->
-        <div class="table-responsive d-flex justify-content-center mt-3">
+        <div class="table-responsive d-flex justify-content-center mt-3" style="min-height:400px;">
 
             <table class="table table-striped table-hover text-center align-middle shadow-sm"
-                   style="width: 95%; table-layout: fixed; border-radius: 10px; overflow: hidden;">
+                   style="width: 100%; table-layout: fixed; border-radius: 10px; overflow: hidden; ">
 
-                <thead class="bg-primary text-white">
+                <thead style="color:blue;">
                     <tr>
-                        <th>ID</th>
-                        <th>ID SP</th>
-                        <th>Tên sản phẩm</th>
-                        <th>SL</th>
-                        <th>Đơn giá</th>
-                        <th>ID KH</th>
-                        <th>Ngày đặt</th>
-                        <th>Trạng thái</th>
+                        <th style="width: 5%;">ID</th>
+                        <th style="width: 5%;">ID SP</th>
+                        <th style="width: 12%;">Tên sản phẩm</th>
+                        <th style="width: 5%;">SL</th>
+                        <th style="width: 20%;">Đơn giá</th>
+                        <th style="width: 7%;">ID KH</th>
+                        <th style="width: 20%;">Ngày đặt</th>
+                        <th style="width: 10%;">Trạng thái</th>
                     </tr>
                 </thead>
 
@@ -118,7 +120,7 @@
                                         <button class="btn btn-outline-success btn-sm w-100 d-flex align-items-center justify-content-center gap-1"
                                                 style="border-radius: 8px; font-weight: 600;">
                                             <i class="bi bi-check-circle"></i>
-                                            Đánh dấu đã giao
+                                            Chưa giao
                                         </button>
 
                                     @else

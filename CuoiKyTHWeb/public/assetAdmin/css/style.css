@@ -212,7 +212,7 @@ ul {
 }
 .table thead {
     background: var(--primary);
-    color: #ffffff;
+    color: black;
 }
 a {
     text-decoration: none;

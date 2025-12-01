@@ -11,11 +11,11 @@
 
         <div class="analytic">
             <a href="{{ request()->fullUrlWithQuery(['status' => 'active']) }}" class="text-success">
-                🟢 Kích hoạt <span>({{ $count[0] }})</span>
+                Kích hoạt <span>({{ $count[0] }})</span>
             </a>
 
             <a href="{{ request()->fullUrlWithQuery(['status' => 'trash']) }}" class="text-danger">
-                🔴 Vô hiệu hóa <span>({{ $count[1] }})</span>
+                Vô hiệu hóa <span>({{ $count[1] }})</span>
             </a>
         </div>
 
@@ -31,17 +31,17 @@
 
    <form action="{{ route('admin.users.action') }}" method="POST">
         @csrf 
-
-      <div class="mb-3 d-flex gap-2">
+<div class="d-flex">
+      <div class="mb-3 gap-2">
             @if (request()->status == 'active' || !request()->status)
-                <button type="submit" name="act" value="delete" class="btn btn-danger">
-                    🗑 Vô hiệu hóa
+                <button type="submit" name="act" value="delete" class="btn btn-danger"  style="margin-right:10px;">
+                     Vô hiệu hóa
                 </button>
             @endif
 
             @if (request()->status == 'trash')
-                <button type="submit" name="act" value="restore" class="btn btn-success">
-                    ♻ Khôi phục
+                <button type="submit" name="act" value="restore" class="btn btn-success"  style="margin-right:10px;">
+                     Khôi phục
                 </button>
             @endif
         </div>
@@ -76,8 +76,8 @@
                 </div>
             @endif
         </div>
-
-        <div class="table-wrapper">
+</div>
+        <div class="table-wrapper"  style="min-height:450px;">
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -114,7 +114,7 @@
                             <td>
                                 <a href="{{ route('admin.users.edit', $user->id) }}" 
                                     class="btn btn-sm btn-primary btn-action">
-                                    ✏️ Sửa
+                                     Sửa
                                 </a>
 
                                 <form action="{{ route('admin.users.destroy', $user->id) }}" 
@@ -123,7 +123,7 @@
                                     @csrf
                                     <button class="btn btn-sm btn-danger btn-action"
                                             onclick="return confirm('Bạn có chắc muốn vô hiệu hóa?')">
-                                        🔒 Vô hiệu hóa
+                                         Vô hiệu hóa
                                     </button>
                                 </form>
                             </td>

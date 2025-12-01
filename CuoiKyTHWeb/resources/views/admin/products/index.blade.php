@@ -9,7 +9,8 @@
 
         <div class="d-flex">
             <a href="{{ route('admin.product.index', ['status' => 'active']) }}"
-                class="btn btn-outline-primary me-2 {{ $status != 'trash' ? 'active' : '' }}">
+                class="btn btn-outline-primary me-2 {{ $status != 'trash' ? 'active' : '' }}"
+                style="margin-right:10px;">
                 Sản phẩm đang bán ({{ $count[0] }})
             </a>
 
@@ -21,10 +22,11 @@
     </div>
 
     <!-- Bộ lọc tìm kiếm -->
+     <div class="d-flex">
     <form method="GET" action="{{ route('admin.product.index') }}" class="d-flex mb-3">
         <input type="text" name="keyword" value="{{ $keyword ?? '' }}"
             class="form-control" placeholder="Tìm kiếm sản phẩm..." style="width: 230px;">
-        <button class="btn btn-primary ms-2">Tìm</button>
+        <button class="btn btn-primary ms-2" style=" margin-right:10px;">Tìm</button>
     </form>
 
     <!-- Hiển thị thông báo -->
@@ -43,7 +45,7 @@
             <div class="alert alert-success py-2">{{ session('success') }}</div>
         @endif
     </div>
-
+</div>
     <!-- Form hành động hàng loạt -->
     <form method="POST" action="{{ route('admin.product.action') }}">
         @csrf
@@ -92,9 +94,9 @@
                         <td>{{ $t }}</td>
                         <td>{{ $product->CATE_ID }}</td>
 
-                        <td>{{ $product->NAME }}</td>
+                        <td style="max-width:100px;">{{ $product->NAME }}</td>
 
-                        <td class="text-truncate" style="max-width: 150px;">
+                        <td style="max-width:300px;">
                             {{ $product->DESCRIPTION }}
                         </td>
 

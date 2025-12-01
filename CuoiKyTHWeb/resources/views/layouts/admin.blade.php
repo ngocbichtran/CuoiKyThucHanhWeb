@@ -98,7 +98,26 @@
                             <i class="fas fa-users"></i> Danh sách tài khoản
                         </a>
                     </li>
-
+                <a href="{{route('shop')}}" class='pc-link'
+                                    style='
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 8px;
+                                background: linear-gradient(90deg, #c7e5ff, #eaf6ff);
+                                padding: 10px 18px;
+                                border-radius: 25px;
+                                color: green;
+                                font-weight: 600;
+                                text-decoration: none;
+                                transition: all 0.3s ease;
+                                box-shadow: 0 2px 6px rgba(255, 192, 203, 0.4);
+                            '
+                                    onmouseover="this.style.background='linear-gradient(90deg, #c7e5ff, #eaf6ff)'; this.style.transform='scale(1.05)'; this.style.color='red';"
+                                    onmouseout="this.style.background='linear-gradient(90deg, #c7e5ff, #eaf6ff)'; this.style.transform='scale(1)'; this.style.color='green';">
+                    
+                            </span>
+                                        <span class='pc-mtext'>CapyShop</span>
+                                    </a>
                 </ul>
             </div>
 

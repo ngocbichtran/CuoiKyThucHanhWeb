@@ -36,7 +36,7 @@ class OrderController extends Controller
         }
 
         // Phân trang
-        $orders = $query->orderBy('id', 'DESC')->paginate(10)->withQueryString();
+        $orders = $query->orderBy('id', 'DESC')->paginate(5)->withQueryString();
 
         // Đếm đơn theo trạng thái
         $count = [
