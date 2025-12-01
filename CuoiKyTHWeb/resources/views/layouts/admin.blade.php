@@ -87,7 +87,7 @@
                     </li>
 
                     <li class="pc-item">
-                        <a class="pc-link {{ Route::is('admin.order.*') ? 'active' : '' }}" href="#">
+                        <a class="pc-link {{ Route::is('admin.orders.*') ? 'active' : '' }}" href="{{route('admin.orders.index')}}">
                             <i class="fas fa-shopping-cart"></i> Đơn hàng
                         </a>
                     </li>

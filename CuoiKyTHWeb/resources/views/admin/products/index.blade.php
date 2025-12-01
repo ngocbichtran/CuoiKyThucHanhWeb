@@ -1,76 +1,160 @@
 @extends('layouts/admin')
-@section('content')
 
-    <div class="container" style="margin-right:0px;">
-        <div class=" text-center rounded p-4">
-            <!-- Tìm kiếm -->
-            <form method="GET" action="{{ route('admin.product.index') }}" class="d-flex mb-3">
-                <input type="text" name="keyword" value="{{ $keyword ?? '' }}" 
-                    class="form-control me-2" placeholder="Tìm kiếm..." style="width:200px;">
-                <button class="btn btn-primary" style="margin-left:10px;">Tìm</button>
-            </form>
-            @if($keyword && $product->total() == 0)
-                    <div class="alert alert-warning">
-                        Không tìm thấy kết quả nào cho từ khóa: <strong>{{ $keyword }}</strong>
-                    </div>
+@section('content')
+<div class="container" style="padding-left: 30px; max-width: 1100px;">
+
+    <!-- Bộ lọc trạng thái -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h3 class="page-title">Quản lý sản phẩm</h3>
+
+        <div class="d-flex">
+            <a href="{{ route('admin.product.index', ['status' => 'active']) }}"
+                class="btn btn-outline-primary me-2 {{ $status != 'trash' ? 'active' : '' }}">
+                Sản phẩm đang bán ({{ $count[0] }})
+            </a>
+
+            <a href="{{ route('admin.product.index', ['status' => 'trash']) }}"
+                class="btn btn-outline-danger {{ $status == 'trash' ? 'active' : '' }}">
+                Thùng rác ({{ $count[1] }})
+            </a>
+        </div>
+    </div>
+
+    <!-- Bộ lọc tìm kiếm -->
+    <form method="GET" action="{{ route('admin.product.index') }}" class="d-flex mb-3">
+        <input type="text" name="keyword" value="{{ $keyword ?? '' }}"
+            class="form-control" placeholder="Tìm kiếm sản phẩm..." style="width: 230px;">
+        <button class="btn btn-primary ms-2">Tìm</button>
+    </form>
+
+    <!-- Hiển thị thông báo -->
+    <div>
+        @if($keyword && $products->total() == 0)
+            <div class="alert alert-warning py-2">
+                Không tìm thấy kết quả cho từ khóa: <strong>{{ $keyword }}</strong>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger py-2">{{ session('error') }}</div>
+        @endif
+
+        @if (session('success'))
+            <div class="alert alert-success py-2">{{ session('success') }}</div>
+        @endif
+    </div>
+
+    <!-- Form hành động hàng loạt -->
+    <form method="POST" action="{{ route('admin.product.action') }}">
+        @csrf
+
+        <div class="d-flex mb-2">
+
+            @if($status != 'trash')
+                <button name="act" value="delete" class="btn btn-danger me-2">
+                    🗑 Xóa tạm thời
+                </button>
+
+            @else
+                <button name="act" value="restore" class="btn btn-success me-2">
+                    ♻ Khôi phục
+                </button> 
+
             @endif
 
-            <!-- Form dữ liệu -->
-        <div class="table-responsive" style="display: flex; justify-content: center; margin-top:50px;">
-            <table class="table table-bordered table-hover text-center align-middle " style="width: 100%; margin: 0; table-layout: fixed;border-collapse: collapse;border-color:black; ">
-                    <thead style="text-align: center;">
-                    <tr class="text-white">
-                        <th scope="col" style="width: 6%; text-align:center;">STT</th>
-                        <th scope="col" style="width: 10%; text-align:center;">ID Loại</th>
-                        <th scope="col" style="width: 20%;">Tên sản phẩm</th>
-                        <th scope="col" style="width: 18%;">Mô tả</th>
-                        <th scope="col" style="width: 18%;">Ảnh sản phẩm</th>
-                        <th scope="col" style="width: 15%; text-align:center;">Trạng thái</th>
-                        <th scope="col" style="width: 12%; text-align:center;">Ngày tạo</th>
-                        <th scope="col" style="width: 18%; text-align:center;">Hành động</th>
-
-                    </tr>
-
-                    </thead>
-                     <?php
-                    $t=0;
-                    ?>
-                     <tbody>
-                       <tbody>
-                            @foreach ($product as $product)
-                                <?php
-                                $t++;
-                                ?>
-                                <tr>
-                                    <td>{{ $t }}</td>
-                                    <td>{{ $product->CATE_ID }}</td>
-                                    <td>{{ $product->NAME }}</td>
-                                    <td>{{ $product->DESCRIPTION }}</td>
-                                    <td>
-                                        <img src="{{ asset($product->IMG_URL) }}" alt="{{ $product->NAME }}" style="width: 50px; height: 50px;">
-                                    </td>
-                                    <td>
-                                        @if($product->ACTIVE_FLAG == 1)
-                                            <span class="badge bg-success" style="color:white;">Đã bày bán</span>
-                                        @else
-                                            <span class="badge bg-secondary"  style="color:white;">Chưa bày bán</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ $product->CREATE_DATE ? \Carbon\Carbon::parse($product->CREATE_DATE)->format('d/m/Y') : '-' }}</td>
-                                    <td>
-                                        <a href="{{ route('admin.product.edit', $product->ID) }}" class="btn btn-primary btn-sm">Edit</a>
-                                        <form action="{{ route('admin.product.destroy', $product->ID) }}" method="POST" style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa?')">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-
-                </table>
-            </div>
         </div>
+
+        <!-- Bảng sản phẩm -->
+        <table class="table table-bordered table-hover text-center align-middle">
+            <thead>
+                <tr class="text-dark fw-bold">
+                    <th><input type="checkbox" id="checkall"></th>
+                    <th>STT</th>
+                    <th>ID Loại</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Mô tả</th>
+                    <th>Ảnh</th>
+                    <th>Trạng thái</th>
+                    <th>Ngày tạo</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @php $t = 0; @endphp
+                @foreach ($products as $product)
+                    @php $t++; @endphp
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="list_check[]" value="{{ $product->ID }}">
+                        </td>
+
+                        <td>{{ $t }}</td>
+                        <td>{{ $product->CATE_ID }}</td>
+
+                        <td>{{ $product->NAME }}</td>
+
+                        <td class="text-truncate" style="max-width: 150px;">
+                            {{ $product->DESCRIPTION }}
+                        </td>
+
+                        <td>
+                            <img src="{{ asset($product->IMG_URL) }}"
+                                alt="{{ $product->NAME }}"
+                                style="width: 55px; height: 55px; border-radius:6px; object-fit:cover;">
+                        </td>
+
+                        <td>
+                            @if($product->ACTIVE_FLAG == 1)
+                                <span class="badge bg-success text-white">Đã bày bán</span>
+                            @else
+                                <span class="badge bg-secondary text-white">Chưa bày bán</span>
+                            @endif
+                        </td>
+
+                        <td>
+                            {{ $product->CREATE_DATE
+                                ? \Carbon\Carbon::parse($product->CREATE_DATE)->format('d/m/Y')
+                                : '-' }}
+                        </td>
+
+                        <td>
+                            @if($status != "trash")
+                                <a href="{{ route('admin.product.edit', $product->ID) }}"
+                                    class="btn btn-sm btn-primary">✏️ Sửa</a>
+                            @endif
+
+                            <form method="POST"
+                                action="{{ route('admin.product.destroy', $product->ID) }}"
+                                style="display:inline-block;">
+                                @csrf
+                                @method('DELETE')
+
+                                <button class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Bạn có chắc muốn xóa?')">
+                                    🗑 Xóa
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <!-- Phân trang -->
+        <div class="d-flex justify-content-center mt-3">
+            {{ $products->links('pagination::bootstrap-5') }}
+        </div>
+    </form>
+
 </div>
+
+<script>
+// Check all
+document.getElementById('checkall').addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('input[name="list_check[]"]');
+    checkboxes.forEach(c => c.checked = this.checked);
+});
+</script>
+
 @endsection

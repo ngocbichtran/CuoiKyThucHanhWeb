@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'product_info';
     protected $primaryKey = 'ID';
@@ -22,13 +25,9 @@ class Product extends Model
         'UPDATE_DATE',
     ];
 
-    protected $casts = [
-        'CREATE_DATE' => 'datetime',
-        'UPDATE_DATE' => 'datetime',
-    ];
+    protected $dates = ['deleted_at'];
 
-    // Liên kết với Category (FK CATE_ID)
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'CATE_ID', 'ID');
     }

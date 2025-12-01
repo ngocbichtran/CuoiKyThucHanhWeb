@@ -1,105 +1,165 @@
 @extends('layouts/admin')
+
 @section('content')
-<div style="display: flex; align-items: center; margin-bottom: 25px;">
+
+<div class="container" style="padding-left: 30px; max-width: 1100px;">
+
+    <!-- Bộ lọc trạng thái -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h3 class="page-title">Quản lý danh mục</h3>
+
+        <div class="d-flex">
+            <a href="{{ route('admin.category.index', ['status' => 'active']) }}"
+                class="btn btn-outline-primary me-2 {{ $status != 'trash' ? 'active' : '' }}">
+                🟢 Đang bày bán ({{ $count['active'] }})
+            </a>
+
+            <a href="{{ route('admin.category.index', ['status' => 'trash']) }}"
+                class="btn btn-outline-danger {{ $status == 'trash' ? 'active' : '' }}">
+                🔴 Thùng rác ({{ $count['trash'] }})
+            </a>
+        </div>
+    </div>
+
+    <!-- Tìm kiếm -->
+    <form method="GET" action="{{ route('admin.category.index') }}" class="d-flex mb-3">
+        <input type="text" name="keyword" value="{{ $keyword ?? '' }}"
+            class="form-control" placeholder="Tìm kiếm..." style="width:230px;">
+        <button class="btn btn-primary ms-2">Tìm</button>
+    </form>
+
     <!-- Thông báo -->
-    <div style=" margin-left:50px;">
-        @if(session('success'))
-            <div class="alert alert-success" style="margin:0;">
-                {{ session('success') }}
+    <div>
+        @if($keyword && $category->total() == 0)
+            <div class="alert alert-warning py-2 mb-2">
+                Không tìm thấy kết quả cho từ khóa: <strong>{{ $keyword }}</strong>
             </div>
+        @endif
+
+        @if(session('success'))
+            <div class="alert alert-success py-2 mb-2">{{ session('success') }}</div>
         @endif
 
         @if(session('error'))
-            <div class="alert alert-danger" style="margin:0;">
-                {{ session('error') }}
+            <div class="alert alert-danger py-2 mb-2">{{ session('error') }}</div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger py-2 mb-2">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
     </div>
 
+    <!-- Form hành động hàng loạt -->
+    <form action="{{ route('admin.category.action') }}" method="POST">
+        @csrf
+
+        <div class="d-flex mb-2">
+
+            @if($status != 'trash')
+                <button name="act" value="delete" class="btn btn-danger me-2">
+                    🗑 Xóa tạm thời
+                </button>
+            @else
+                <button name="act" value="restore" class="btn btn-success me-2">
+                    ♻ Khôi phục
+                </button>
+            @endif
+
+        </div>
+
+        <!-- Bảng -->
+        <div class="table-responsive d-flex justify-content-center mt-3">
+            <table class="table table-bordered table-hover text-center align-middle mb-0"
+                style="width: 95%; table-layout: fixed;">
+
+                <thead>
+                    <tr class="fw-bold text-dark">
+                        <th style="width:5%;">
+                            <input type="checkbox" id="checkall">
+                        </th>
+                        <th style="width:7%;">STT</th>
+                        <th style="width:18%;">Tên loại</th>
+                        <th style="width:30%;">Mô tả</th>
+                        <th style="width:15%;">Trạng thái</th>
+                        <th style="width:15%;">Ngày tạo</th>
+                        <th style="width:20%;">Hành động</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach ($category as $index => $cate)
+                        <tr>
+
+                            <td>
+                                <input type="checkbox" name="list_check[]" value="{{ $cate->ID }}">
+                            </td>
+
+                            <td>{{ $index + 1 }}</td>
+
+                            <td>{{ $cate->TYPE }}</td>
+
+                            <td style="white-space: normal; word-break: break-word;">
+                                {{ $cate->DESCRIPTION }}
+                            </td>
+
+                            <td>
+                                @if($cate->ACTIVE_FLAG == 1)
+                                    <span class="badge bg-success">Đã bày bán</span>
+                                @else
+                                    <span class="badge bg-secondary">Chưa bày bán</span>
+                                @endif
+                            </td>
+
+                            <td>
+                                {{ $cate->CREATE_DATE
+                                    ? \Carbon\Carbon::parse($cate->CREATE_DATE)->format('d/m/Y')
+                                    : '-' }}
+                            </td>
+
+                            <td>
+                                @if($status != "trash")
+                                    <a href="{{ route('admin.category.edit', $cate->ID) }}"
+                                        class="btn btn-primary btn-sm">Edit</a>
+                                @endif
+
+                                <form action="{{ route('admin.category.destroy', $cate->ID) }}"
+                                    method="POST" style="display:inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        onclick="return confirm('Chắc chắn muốn xóa?')"
+                                        class="btn btn-danger btn-sm">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-center mt-3">
+            {{ $category->links('pagination::bootstrap-5') }}
+        </div>
+
+    </form>
+
 </div>
 
-<form method="GET" action="{{ route('admin.category.index') }}" class="d-flex mb-3">
-    <input type="text" name="keyword" value="{{ $keyword ?? '' }}" 
-        class="form-control me-2" placeholder="Tìm kiếm..." style="width:200px; margin-left:110px;">
-   <button class="btn btn-primary" style="margin-left:10px;">Tìm</button>
-</form>
-@if($keyword && $users->total() == 0)
-    <div class="alert alert-warning">
-        Không tìm thấy kết quả nào cho từ khóa: <strong>{{ $keyword }}</strong>
-    </div>
-@endif
-
-    <div class="container" style="margin-right:0px; ">
-            <div class="table-responsive" style="display: flex; justify-content: center; margin-top:50px;">
-               <table class="table table-bordered table-hover text-center align-middle mb-0"
-                    style="width: 95%; table-layout: fixed;">
-
-                    <thead class="text-center">
-                        <tr>
-                            <th style="width: 6%;">STT</th>
-                            <th style="width: 20%;">Tên loại</th>
-                            <th style="width: 30%;">Mô tả</th>
-                            <th style="width: 15%;">Trạng thái</th>
-                            <th style="width: 15%;">Ngày tạo</th>
-                            <th style="width: 20%;">Hành động</th>
-                        </tr>
-                    </thead>
-                    <?php
-                    $t=0;
-                    ?>
-                    <tbody>
-                        @foreach ($categories as $category)
-                        <?php
-                        $t++;
-                        ?>
-                            <tr>
-
-                                <td>{{ $t }}</td>
-
-                                <td>{{ $category->TYPE }}</td>
-
-                                <td style="white-space: normal; word-break: break-word;">
-                                    {{ $category->DESCRIPTION }}
-                                </td>
-
-                                <td>
-                                    @if($category->ACTIVE_FLAG == 1)
-                                        <span class="badge bg-success" style="color:white;">Đã bày bán</span>
-                                    @else
-                                        <span class="badge bg-secondary" style="color:white;">Chưa bày bán</span>
-                                    @endif
-                                </td>
-
-                                <td>
-                                    {{ $category->CREATE_DATE
-                                        ? \Carbon\Carbon::parse($category->CREATE_DATE)->format('d/m/Y')
-                                        : '-' }}
-                                </td>
-
-                                <td>
-                                    <a href="{{ route('admin.category.edit', $category->ID) }}" 
-                                    class="btn btn-primary btn-sm">Edit</a>
-
-                                    <form action="{{ route('admin.category.destroy', $category->ID) }}"
-                                        method="POST" style="display:inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                                class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn có chắc muốn xóa?')">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
-
-                            </tr>
-                        @endforeach
-                    </tbody>
-
-                </table>
-
-            </div>
-        </div>
-    </div>
+<script>
+document.getElementById('checkall').addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('input[name="list_check[]"]');
+    checkboxes.forEach(el => el.checked = this.checked);
+});
+</script>
 
 @endsection
