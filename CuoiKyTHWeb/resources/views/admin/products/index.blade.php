@@ -5,7 +5,6 @@
 <div class="container-fluid px-4 py-4 d-flex flex-column"
      style="min-height: calc(100vh - 100px);">
 
-    {{-- HEADER --}}
     <div>
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="fw-bold text-primary mb-0">
@@ -38,7 +37,6 @@
             </form>
         </div>
 
-        {{-- ALERT --}}
         @foreach (['error' => 'danger', 'success' => 'success'] as $msg => $type)
             @if (session($msg))
                 <div class="alert alert-{{ $type }} py-2 mb-2">
@@ -54,7 +52,6 @@
         @endif
     </div>
 
-    {{-- TABLE (CO GIÃN) --}}
     <div class="card shadow-sm flex-grow-1">
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -140,7 +137,6 @@
         </div>
     </div>
 
-    {{-- PAGINATION – DÍNH ĐÁY --}}
     <div class="mt-auto pt-3">
         <div class="d-flex justify-content-center">
             {{ $products->links('pagination::bootstrap-5') }}

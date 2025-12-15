@@ -4,7 +4,6 @@
 <div class="container py-4">
     <div class="card shadow-sm border-0 mx-auto" style="max-width: 800px;">
 
-        <!-- HEADER -->
         <div class="card-header border-0">
             <h5 class="fw-bold mb-0">✏️ Cập nhật loại sản phẩm</h5>
         </div>
@@ -15,10 +14,9 @@
                 @csrf
                 @method('PUT')
 
-                {{-- ID ẩn --}}
-                <input type="hidden" name="ID" value="{{ $category->ID }}">
+               <input type="hidden" name="ID" value="{{ $category->ID }}">
 
-                {{-- HIỂN THỊ LỖI --}}
+         
                 @if ($errors->any())
                     <div class="alert alert-danger mb-4">
                         <ul class="mb-0 ps-3">
@@ -72,7 +70,6 @@
                     </div>
                 </div>
 
-                <!-- ACTION -->
                 <div class="d-flex justify-content-between mt-4">
                     <a href="{{ route('admin.category.index') }}" class="btn btn-outline-secondary">
                         Quay lại

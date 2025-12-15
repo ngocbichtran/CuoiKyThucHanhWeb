@@ -36,7 +36,6 @@
                     </select>
                 </div>
 
-                <!-- BUTTON -->
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success px-5">
                         Lưu loại

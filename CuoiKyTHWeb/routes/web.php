@@ -12,38 +12,22 @@ use App\Http\Controllers\admin\{
     OrderController
 };
 
-/*
-|--------------------------------------------------------------------------
-| AUTH
-|--------------------------------------------------------------------------
-*/
+// AUTH
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-/*
-|--------------------------------------------------------------------------
-| DASHBOARD (TRANG CHÍNH)
-|--------------------------------------------------------------------------
-| BẮT BUỘC gọi controller để có dữ liệu
-*/
 Route::get('/', [DashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('homes');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware('auth')
     ->name('dashboard');
 
-/*
-|--------------------------------------------------------------------------
-| GOOGLE LOGIN
-|--------------------------------------------------------------------------
-*/
+// GOOGLE LOGIN
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.login');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
-/*
-|--------------------------------------------------------------------------
-| ADMIN
-|--------------------------------------------------------------------------
-*/
+// ADMIN
 Route::prefix('admin')->middleware('auth') ->name('admin.') ->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('product', ProductController::class);
@@ -55,11 +39,7 @@ Route::post('admin/category/restore/{id}', [CategoryController::class, 'restore'
 Route::post('admin/product/restore/{id}', [ProductController::class, 'restore'])->name('admin.product.restore');
 Route::put('orders/{id}/update-status', [OrderController::class, 'updateStatus'])
     ->name('admin.orders.updateStatus');
-/*
-|--------------------------------------------------------------------------
-| SHOP
-|--------------------------------------------------------------------------
-*/
+// SHOP
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::post('/order', [ShopController::class, 'order'])->name('shop.order');
 Route::get('/cart', [ShopController::class, 'cart'])

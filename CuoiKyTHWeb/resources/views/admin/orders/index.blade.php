@@ -10,14 +10,14 @@
 
             <h3 class="fw-bold mb-2 mb-md-0">Quản lý đơn hàng</h3>
 
-            <div class="d-flex flex-wrap gap-2">
+            <div class="d-flex flex-wrap gap-4">
                 <a href="{{ route('admin.orders.index', ['delivery' => 'all']) }}"
-                   class="btn btn-outline-secondary {{ $delivery == 'all' ? 'active' : '' }}">
+                   class="btn btn-outline-secondary {{ $delivery == 'all' ? 'active' : '' }}" >
                     Tất cả ({{ $count['pending'] + $count['delivered'] }})
                 </a>
 
                 <a href="{{ route('admin.orders.index', ['delivery' => 'delivered']) }}"
-                   class="btn btn-outline-success {{ $delivery == 'delivered' ? 'active' : '' }}">
+                   class="btn btn-outline-success {{ $delivery == 'delivered' ? 'active' : '' }}" style="margin-left:20px; margin-right:20px;">
                     Đã giao ({{ $count['delivered'] }})
                 </a>
 
@@ -26,20 +26,9 @@
                     Chưa giao ({{ $count['pending'] }})
                 </a>
             </div>
-
-            <form method="GET" action="{{ route('admin.orders.index') }}" class="d-flex mt-2 mt-md-0">
-                <input type="text"
-                       name="keyword"
-                       value="{{ $keyword ?? '' }}"
-                       class="form-control"
-                       placeholder="Tên / SĐT / Địa chỉ"
-                       style="max-width:250px;">
-                <button class="btn btn-primary ms-2">Tìm</button>
-            </form>
-
         </div>
 
-        <!-- ALERT -->
+        <!-- Cảnh báo -->
         @if($keyword && $orders->total() == 0)
             <div class="alert alert-warning py-2">
                 Không tìm thấy kết quả cho: <strong>{{ $keyword }}</strong>
@@ -47,7 +36,7 @@
         @endif
     </div>
 
-    <!-- TABLE (CO GIÃN) -->
+    <!-- TABLE -->
     <div class="card shadow-sm border-0 flex-grow-1">
         <div class="card-body p-0 d-flex flex-column">
 
@@ -100,7 +89,7 @@
         </div>
     </div>
 
-    <!-- PAGINATION - DÍNH ĐÁY -->
+    <!-- Phân trang -->
     <div class="mt-auto pt-3">
         <div class="d-flex justify-content-center">
             {{ $orders->links('pagination::bootstrap-5') }}

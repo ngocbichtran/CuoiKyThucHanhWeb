@@ -4,12 +4,10 @@
 <div class="container py-3">
     <div class="card shadow-sm border-0" style="max-width: 500px; margin: 0 auto;">
 
-        <!-- HEADER -->
         <div class="card-header bg-white border-0">
             <h5 class="fw-bold mb-0">➕ Thêm người dùng</h5>
         </div>
 
-        <!-- BODY -->
         <div class="card-body">
             <form action="{{ route('admin.users.store') }}" method="POST">
                 @csrf
@@ -46,7 +44,6 @@
                     </select>
                 </div>
 
-                <!-- BUTTON -->
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success px-5">
                         Lưu người dùng
