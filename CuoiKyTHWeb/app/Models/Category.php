@@ -13,6 +13,8 @@ class Category extends Model
 
     protected $table = 'category';
     protected $primaryKey = 'ID';
+    protected $dates = ['deleted_at'];
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -28,7 +30,7 @@ class Category extends Model
         'UPDATE_DATE' => 'datetime',
     ];
 
-    public function products(): HasMany
+   public function products()
     {
         return $this->hasMany(Product::class, 'CATE_ID', 'ID');
     }

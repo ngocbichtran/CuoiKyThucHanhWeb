@@ -1,162 +1,152 @@
-@extends('layouts/admin')
+@extends('layouts.admin')
 
 @section('content')
-<div class="container" style="padding-left: 30px; max-width: 1100px;">
 
-    <!-- Bộ lọc trạng thái -->
-    <div class="d-flex align-items-center justify-content-between mb-4">
-        <h3 class="page-title">Quản lý sản phẩm</h3>
+<div class="container-fluid px-4 py-4 d-flex flex-column"
+     style="min-height: calc(100vh - 100px);">
 
-        <div class="d-flex">
-            <a href="{{ route('admin.product.index', ['status' => 'active']) }}"
-                class="btn btn-outline-primary me-2 {{ $status != 'trash' ? 'active' : '' }}"
-                style="margin-right:10px;">
-                Sản phẩm đang bán ({{ $count[0] }})
-            </a>
-
-            <a href="{{ route('admin.product.index', ['status' => 'trash']) }}"
-                class="btn btn-outline-danger {{ $status == 'trash' ? 'active' : '' }}">
-                Thùng rác ({{ $count[1] }})
-            </a>
-        </div>
-    </div>
-
-    <!-- Bộ lọc tìm kiếm -->
-     <div class="d-flex">
-    <form method="GET" action="{{ route('admin.product.index') }}" class="d-flex mb-3">
-        <input type="text" name="keyword" value="{{ $keyword ?? '' }}"
-            class="form-control" placeholder="Tìm kiếm sản phẩm..." style="width: 230px;">
-        <button class="btn btn-primary ms-2" style=" margin-right:10px;">Tìm</button>
-    </form>
-
-    <!-- Hiển thị thông báo -->
+    {{-- HEADER --}}
     <div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold text-primary mb-0">
+                <i class="fa-solid fa-boxes-stacked me-2"></i>
+                Quản Lý Sản Phẩm
+            </h4>
+
+            <div>
+                <a href="{{ route('admin.product.index', ['status' => 'active']) }}"
+                   class="btn btn-sm btn-outline-success me-2 {{ $status != 'trash' ? 'active' : '' }}">
+                    Đang bán ({{ $count[0] }})
+                </a>
+
+                <a href="{{ route('admin.product.index', ['status' => 'trash']) }}"
+                   class="btn btn-sm btn-outline-danger {{ $status == 'trash' ? 'active' : '' }}">
+                    Thùng rác ({{ $count[1] }})
+                </a>
+            </div>
+
+            <form method="GET" action="{{ route('admin.product.index') }}" class="d-flex">
+                <input type="text"
+                       name="keyword"
+                       value="{{ $keyword ?? '' }}"
+                       class="form-control form-control-sm"
+                       placeholder="Tìm sản phẩm..."
+                       style="width:220px;">
+                <button class="btn btn-sm btn-primary ms-2">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+
+        {{-- ALERT --}}
+        @foreach (['error' => 'danger', 'success' => 'success'] as $msg => $type)
+            @if (session($msg))
+                <div class="alert alert-{{ $type }} py-2 mb-2">
+                    {{ session($msg) }}
+                </div>
+            @endif
+        @endforeach
+
         @if($keyword && $products->total() == 0)
-            <div class="alert alert-warning py-2">
-                Không tìm thấy kết quả cho từ khóa: <strong>{{ $keyword }}</strong>
+            <div class="alert alert-warning py-2 mb-3">
+                Không tìm thấy kết quả cho: <strong>{{ $keyword }}</strong>
             </div>
         @endif
-
-        @if (session('error'))
-            <div class="alert alert-danger py-2">{{ session('error') }}</div>
-        @endif
-
-        @if (session('success'))
-            <div class="alert alert-success py-2">{{ session('success') }}</div>
-        @endif
     </div>
-</div>
-    <!-- Form hành động hàng loạt -->
-    <form method="POST" action="{{ route('admin.product.action') }}">
-        @csrf
 
-        <div class="d-flex mb-2">
+    {{-- TABLE (CO GIÃN) --}}
+    <div class="card shadow-sm flex-grow-1">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width:5%">#</th>
+                            <th style="width:12%">Loại</th>
+                            <th style="width:13%">Tên</th>
+                            <th style="width:20%">Mô tả</th>
+                            <th style="width:10%">Giá</th>
+                            <th style="width:10%">Ảnh</th>
+                            <th style="width:10%">Trạng thái</th>
+                            <th style="width:20%">Hành động</th>
+                        </tr>
+                    </thead>
 
-            @if($status != 'trash')
-                <button name="act" value="delete" class="btn btn-danger me-2">
-                    🗑 Xóa tạm thời
-                </button>
+                    <tbody>
+                    @forelse ($products as $index => $product)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $product->category?->TYPE ?? 'Chưa phân loại' }}</td>
+                            <td>{{ $product->NAME }}</td>
+                            <td class="text-start" style="max-width:300px;">
+                                {{ $product->DESCRIPTION }}
+                            </td>
+                            <td class="fw-bold text-success">
+                                {{ number_format($product->PRICE) }} đ
+                            </td>
+                            <td>
+                                <img src="{{ asset($product->IMG_URL) }}"
+                                     class="rounded"
+                                     style="width:55px;height:55px;object-fit:cover;">
+                            </td>
+                            <td>
+                                @if($product->ACTIVE_FLAG)
+                                    <span class="badge bg-success">Đang bán</span>
+                                @else
+                                    <span class="badge bg-secondary">Ngưng bán</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($status !== 'trash')
+                                    <a href="{{ route('admin.product.edit', $product->ID) }}"
+                                       class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                        Sửa
+                                    </a>
 
-            @else
-                <button name="act" value="restore" class="btn btn-success me-2">
-                    ♻ Khôi phục
-                </button> 
-
-            @endif
-
+                                    <form action="{{ route('admin.product.destroy', $product->ID) }}"
+                                          method="POST"
+                                          class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-outline-warning">
+                                            <i class="fa-solid fa-trash"></i>
+                                            Xóa
+                                        </button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('admin.product.restore', $product->ID) }}"
+                                          method="POST"
+                                          class="d-inline">
+                                        @csrf
+                                        <button class="btn btn-sm btn-outline-success">
+                                            <i class="fa-solid fa-rotate-left"></i>
+                                            Khôi phục
+                                        </button>
+                                    </form>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-muted py-4">
+                                Không có sản phẩm
+                            </td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
+    </div>
 
-        <!-- Bảng sản phẩm -->
-        <table class="table table-bordered table-hover text-center align-middle">
-            <thead>
-                <tr class="text-dark fw-bold">
-                    <th><input type="checkbox" id="checkall"></th>
-                    <th>STT</th>
-                    <th>ID Loại</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Mô tả</th>
-                    <th>Ảnh</th>
-                    <th>Trạng thái</th>
-                    <th>Ngày tạo</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @php $t = 0; @endphp
-                @foreach ($products as $product)
-                    @php $t++; @endphp
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="list_check[]" value="{{ $product->ID }}">
-                        </td>
-
-                        <td>{{ $t }}</td>
-                        <td>{{ $product->CATE_ID }}</td>
-
-                        <td style="max-width:100px;">{{ $product->NAME }}</td>
-
-                        <td style="max-width:300px;">
-                            {{ $product->DESCRIPTION }}
-                        </td>
-
-                        <td>
-                            <img src="{{ asset($product->IMG_URL) }}"
-                                alt="{{ $product->NAME }}"
-                                style="width: 55px; height: 55px; border-radius:6px; object-fit:cover;">
-                        </td>
-
-                        <td>
-                            @if($product->ACTIVE_FLAG == 1)
-                                <span class="badge bg-success text-white">Đã bày bán</span>
-                            @else
-                                <span class="badge bg-secondary text-white">Chưa bày bán</span>
-                            @endif
-                        </td>
-
-                        <td>
-                            {{ $product->CREATE_DATE
-                                ? \Carbon\Carbon::parse($product->CREATE_DATE)->format('d/m/Y')
-                                : '-' }}
-                        </td>
-
-                        <td>
-                            @if($status != "trash")
-                                <a href="{{ route('admin.product.edit', $product->ID) }}"
-                                    class="btn btn-sm btn-primary">✏️ Sửa</a>
-                            @endif
-
-                            <form method="POST"
-                                action="{{ route('admin.product.destroy', $product->ID) }}"
-                                style="display:inline-block;">
-                                @csrf
-                                @method('DELETE')
-
-                                <button class="btn btn-sm btn-danger"
-                                        onclick="return confirm('Bạn có chắc muốn xóa?')">
-                                    🗑 Xóa
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        <!-- Phân trang -->
-        <div class="d-flex justify-content-center mt-3">
+    {{-- PAGINATION – DÍNH ĐÁY --}}
+    <div class="mt-auto pt-3">
+        <div class="d-flex justify-content-center">
             {{ $products->links('pagination::bootstrap-5') }}
         </div>
-    </form>
+    </div>
 
 </div>
-
-<script>
-// Check all
-document.getElementById('checkall').addEventListener('change', function() {
-    const checkboxes = document.querySelectorAll('input[name="list_check[]"]');
-    checkboxes.forEach(c => c.checked = this.checked);
-});
-</script>
 
 @endsection

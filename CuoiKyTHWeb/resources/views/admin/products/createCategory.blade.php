@@ -1,36 +1,49 @@
-@extends('layouts/admin')
+@extends('layouts.admin')
 
 @section('content')
-<div class="container">
-    <form action="{{ route('admin.category.store') }}" method="POST" style="display: flex; flex-direction: column; max-width:400px;  margin: 0 auto;">
-        @csrf
-
-        <div class="form-group mb-3">
-            <label for="type">ID</label>
-            <input type="text" id="type" name="TYPE" class="form-control">
-        </div>
-          <div class="form-group mb-3">
-            <label for="type">Tên Loại</label>
-            <input type="text" id="type" name="TYPE" class="form-control">
-        </div>
-        <div class="form-group mb-3">
-            <label for="desc">Mô tả</label>
-            <textarea id="desc" name="DESCRIPTION" class="form-control"></textarea>
+<div class="container py-3">
+    <div class="card shadow-sm border-0" style="max-width: 500px; margin: 0 auto;">
+        
+        <!-- HEADER -->
+        <div class="card-header border-0">
+            <h5 class="fw-bold mb-0">➕ Thêm loại sản phẩm</h5>
         </div>
 
-        <div class="form-group mb-3">
-            <label for="flag">Trạng thái</label>
-            <select id="flag" name="ACTIVE_FLAG" class="form-control">
-                <option value="1">Đã bày bán</option>
-                <option value="0">Chưa bày bán</option>
-            </select>
-        </div>
+        <!-- BODY -->
+        <div class="card-body">
+            <form action="{{ route('admin.category.store') }}" method="POST">
+                @csrf
 
-      <div style="display: flex; justify-content: center; width: 100%;">
-    <button type="submit" class="btn btn-success" style="width:200px;">Save</button>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Tên loại</label>
+                    <input type="text"
+                           name="TYPE"
+                           class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Mô tả</label>
+                    <textarea name="DESCRIPTION"
+                              class="form-control"
+                              rows="4"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Trạng thái</label>
+                    <select name="ACTIVE_FLAG" class="form-control">
+                        <option value="1">Đã bày bán</option>
+                        <option value="0">Chưa bày bán</option>
+                    </select>
+                </div>
+
+                <!-- BUTTON -->
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success px-5">
+                        Lưu loại
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-
-    </form>
-</div>  
-
+</div>
 @endsection

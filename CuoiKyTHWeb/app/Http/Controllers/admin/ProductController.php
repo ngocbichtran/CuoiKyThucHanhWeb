@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    //Display a listing of the resource.
     public function index(Request $request)
     {
         $status  = $request->input('status');
@@ -23,7 +21,8 @@ class ProductController extends Controller
 
         // Lọc trạng thái
         if ($status === 'trash') {
-            $query->onlyTrashed();
+           $query = Product::onlyTrashed();
+
         } else {
             $query->withoutTrashed();
 
@@ -37,7 +36,7 @@ class ProductController extends Controller
         }
 
         // Phân trang
-        $products = $query->paginate(7)->withQueryString();
+        $products = $query->paginate(4)->withQueryString();
 
         // Đếm trạng thái
         $count_product_active = Product::withoutTrashed()->count();
@@ -47,24 +46,21 @@ class ProductController extends Controller
         return view('admin.products.index', compact('products', 'keyword', 'count', 'status'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Show the form for creating a new resource.
     public function create()
     {
         $categoryList = Category::all();
         return view('admin.products.create', compact('categoryList'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Store a newly created resource in storage.
     public function store(Request $request)
     {
         $request->validate([
             'CATE_ID'     => 'required|integer|exists:category,ID',
             'NAME'        => 'required|string|max:190',
             'DESCRIPTION' => 'nullable|string',
+             'PRICE'       => 'required|integer',
             'IMG_URL'     => 'nullable|string|max:200',
             'ACTIVE_FLAG' => 'required|integer|in:0,1',
         ]);
@@ -73,6 +69,7 @@ class ProductController extends Controller
             'CATE_ID'     => $request->CATE_ID,
             'NAME'        => $request->NAME,
             'DESCRIPTION' => $request->DESCRIPTION,
+             'PRICE'       => $request->PRICE,
             'IMG_URL'     => $request->IMG_URL,
             'ACTIVE_FLAG' => $request->ACTIVE_FLAG,
             'CREATE_DATE' => now(),
@@ -82,9 +79,7 @@ class ProductController extends Controller
             ->with('success', 'Thêm sản phẩm thành công!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    //Show the form for editing the specified resource.
     public function edit($id)
     {
         $product    = Product::findOrFail($id);
@@ -93,9 +88,7 @@ class ProductController extends Controller
         return view('admin.products.edit', compact('product', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    //Update the specified resource in storage.
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
@@ -104,6 +97,7 @@ class ProductController extends Controller
             'CATE_ID'     => 'required|integer|exists:category,ID',
             'NAME'        => 'required|string|max:190',
             'DESCRIPTION' => 'nullable|string',
+            'PRICE'       => 'required|integer',
             'IMG_URL'     => 'nullable|string|max:200',
             'ACTIVE_FLAG' => 'required|integer|in:0,1',
         ]);
@@ -112,6 +106,7 @@ class ProductController extends Controller
             'CATE_ID'     => $request->CATE_ID,
             'NAME'        => $request->NAME,
             'DESCRIPTION' => $request->DESCRIPTION,
+            'PRICE'       => $request->PRICE,
             'IMG_URL'     => $request->IMG_URL,
             'ACTIVE_FLAG' => $request->ACTIVE_FLAG,
             'UPDATE_DATE' => now(),
@@ -121,9 +116,7 @@ class ProductController extends Controller
             ->with('success', 'Cập nhật sản phẩm thành công!');
     }
 
-    /**
-     * Soft delete sản phẩm.
-     */
+    //Soft delete sản phẩm.
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);
@@ -133,39 +126,12 @@ class ProductController extends Controller
             ->with('success', 'Đã chuyển sản phẩm vào thùng rác!');
     }
 
-    /**
-     * Bulk Actions (Delete / Restore)
-     */
-    public function action(Request $request)
-    {
-        $act        = $request->input('act');
-        $list_check = $request->input('list_check');
-
-        // Không có checkbox nào
-        if (!$list_check) {
-            return redirect()->route('admin.product.index')
-                ->with('error', 'Vui lòng chọn ít nhất một sản phẩm.');
-        }
-
-        // Hành động delete (soft delete)
-        if ($act == 'delete') {
-            Product::destroy($list_check);
-
-            return redirect()->route('admin.product.index')
-                ->with('success', 'Đã chuyển các sản phẩm vào thùng rác.');
-        }
-
-        // Hành động restore
-        if ($act == 'restore') {
-            Product::onlyTrashed()
-                ->whereIn('ID', $list_check)
-                ->restore();
-
-            return redirect()->route('admin.product.index')
-                ->with('success', 'Đã khôi phục các sản phẩm.');
-        }
-
-        return redirect()->route('admin.product.index')
-            ->with('error', 'Hành động không hợp lệ.');
+      public function restore($id) 
+    { 
+        $product = Product::onlyTrashed()->where('id', $id)->first(); 
+        if (!$product) { 
+            return redirect()->back()->with('error', 'Sản phẩm không tồn tại hoặc không nằm trong thùng rác.'); 
+        } 
+        $product->restore(); return redirect()->back()->with('success', 'Khôi phục sản phẩm thành công!'); 
     }
 }

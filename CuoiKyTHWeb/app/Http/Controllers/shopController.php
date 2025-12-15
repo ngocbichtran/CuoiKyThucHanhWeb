@@ -1,28 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Models\Order;   // ⚠ Thêm dòng này để dùng Order
+use App\Models\Order;   // Thêm dòng này để dùng Order
 
 class ShopController extends Controller
 {
-    /**
-     * Hiển thị danh sách sản phẩm ngoài shop.
-     */
+    // Hiển thị danh sách sản phẩm ngoài shop.
     public function index()
     {
         $products = Product::where('ACTIVE_FLAG', 1)
                            ->orderBy('CREATE_DATE', 'desc')
                            ->paginate(12);
 
-        return view('layouts.shop', compact('products'));
+        return view('shop.shop', compact('products'));
     }
 
-    /**
-     * Xử lý đặt hàng.
-     */
+    //Xử lý đặt hàng.
     public function order(Request $request)
     {
         // Nếu chưa đăng nhập → không cho đặt hàng
@@ -49,6 +45,15 @@ class ShopController extends Controller
         return redirect()->back()->with('success', 'Đặt hàng thành công!');
     }
 
+    public function cart()
+        {
+        // Lấy đơn hàng của user đang đăng nhập
+        $orders = Order::where('user_id', Auth::id())
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+
+        return view('shop.cart', compact('orders'));
+    }
     public function create() {}
     public function store(Request $request) {}
     public function show(string $id) {}

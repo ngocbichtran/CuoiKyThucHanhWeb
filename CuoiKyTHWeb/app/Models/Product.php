@@ -16,19 +16,28 @@ class Product extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'CATE_ID',
+        'CATE_ID',   
         'NAME',
         'DESCRIPTION',
+        'PRICE',
         'IMG_URL',
         'ACTIVE_FLAG',
         'CREATE_DATE',
         'UPDATE_DATE',
     ];
 
+    protected $casts = [
+        'PRICE' => 'integer',
+        'CREATE_DATE' => 'datetime',
+        'UPDATE_DATE' => 'datetime',
+    ];
+
     protected $dates = ['deleted_at'];
 
+    /** Quan hệ đúng */
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'CATE_ID', 'ID');
+        return $this->belongsTo(Category::class, 'CATE_ID', 'ID')
+                    ->withTrashed();
     }
 }

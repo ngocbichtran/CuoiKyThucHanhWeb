@@ -9,8 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
 
     <link rel="stylesheet" href="{{asset('assetAdmin/css/style.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <title>Administrator</title>
+    <title>Capyyy</title>
 
    
 </head>
@@ -41,10 +42,9 @@
             <div class="d-flex align-items-center">
                 <div class="btn-group ml-3">
                     <button class="btn dropdown-toggle" data-toggle="dropdown">
-                        <i class="fas fa-user-circle mr-1"></i> ok
+                        <i class="fas fa-user-circle mr-1"></i> {{ Auth::user()->name }}
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i> Tài khoản</a>
                         <a class="dropdown-item" href="{{ route('logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="fas fa-sign-out-alt mr-2"></i> Đăng xuất

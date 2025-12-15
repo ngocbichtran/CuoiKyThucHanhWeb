@@ -2,151 +2,147 @@
 
 @section('content')
 
-<div class="container" style="max-width: 1200px; padding-top: 20px;">
+<div class="container-fluid px-4 py-4 d-flex flex-column"
+     style="min-height: calc(100vh - 100px);">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="text-primary m-0" style="font-weight:600;">
-            Quản Lý Người Dùng
-        </h3>
+    {{-- HEADER --}}
+    <div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold text-primary mb-0">
+                <i class="fa-solid fa-users me-2"></i>
+                Quản Lý Người Dùng
+            </h4>
 
-        <div class="analytic">
-            <a href="{{ request()->fullUrlWithQuery(['status' => 'active']) }}" class="text-success">
-                Kích hoạt <span>({{ $count[0] }})</span>
-            </a>
+            <div>
+                <a href="{{ request()->fullUrlWithQuery(['status' => 'active']) }}"
+                   class="btn btn-sm btn-outline-success me-2 {{ $status !== 'trash' ? 'active' : '' }}">
+                    <i class="fa-solid fa-user-check me-1"></i>
+                    Kích hoạt ({{ $count[0] }})
+                </a>
 
-            <a href="{{ request()->fullUrlWithQuery(['status' => 'trash']) }}" class="text-danger">
-                Vô hiệu hóa <span>({{ $count[1] }})</span>
-            </a>
+                <a href="{{ request()->fullUrlWithQuery(['status' => 'trash']) }}"
+                   class="btn btn-sm btn-outline-danger {{ $status === 'trash' ? 'active' : '' }}">
+                    <i class="fa-solid fa-user-slash me-1"></i>
+                    Vô hiệu hóa ({{ $count[1] }})
+                </a>
+            </div>
+
+            {{-- SEARCH --}}
+            <form method="GET" action="{{ route('admin.users.index') }}" class="d-flex">
+                <input type="text"
+                       name="keyword"
+                       value="{{ $keyword ?? '' }}"
+                       class="form-control form-control-sm"
+                       placeholder="Tìm kiếm..."
+                       style="width:220px;">
+                <button class="btn btn-sm btn-primary ms-2">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
         </div>
 
-        <form method="GET" action="{{ route('admin.users.index') }}" class="d-flex">
-            <input type="text" name="keyword" value="{{ $keyword ?? '' }}" 
-                class="form-control" placeholder="🔍 Tìm kiếm..." style="width:220px;">
-            <button class="btn btn-primary ms-2">Tìm</button>
-        </form>
+        {{-- ALERT --}}
+        @foreach (['error' => 'danger', 'success' => 'success'] as $msg => $type)
+            @if (session($msg))
+                <div class="alert alert-{{ $type }} py-2 mb-3">
+                    <i class="fa-solid fa-circle-info me-1"></i>
+                    {{ session($msg) }}
+                </div>
+            @endif
+        @endforeach
     </div>
 
-    
-
-
-   <form action="{{ route('admin.users.action') }}" method="POST">
-        @csrf 
-<div class="d-flex">
-      <div class="mb-3 gap-2">
-            @if (request()->status == 'active' || !request()->status)
-                <button type="submit" name="act" value="delete" class="btn btn-danger"  style="margin-right:10px;">
-                     Vô hiệu hóa
-                </button>
-            @endif
-
-            @if (request()->status == 'trash')
-                <button type="submit" name="act" value="restore" class="btn btn-success"  style="margin-right:10px;">
-                     Khôi phục
-                </button>
-            @endif
-        </div>
-
-        <div class="mb-3">
-            @if($keyword && $users->total() == 0)
-                <div class="alert alert-warning">
-                    Không tìm thấy kết quả cho từ khóa: 
-                    <strong>{{ $keyword }}</strong>
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-        </div>
-</div>
-        <div class="table-wrapper"  style="min-height:450px;">
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th width="5%">
-                            <input type="checkbox" name="checkall" id="checkall">
-                        </th>
-                        <th width="7%">STT</th>
-                        <th width="20%">Tên Đăng Nhập</th>
-                        <th width="25%">Email</th>
-                        <th width="15%">Quyền Hạn</th>
-                        <th width="20%">Hành Động</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @php $t = 0; @endphp
-                    @foreach ($users as $user)
-                        @php $t++; @endphp
+    {{-- TABLE (CO GIÃN) --}}
+    <div class="card shadow-sm flex-grow-1">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
                         <tr>
-                            <td>
-                                <input type="checkbox" name="list_check[]" value="{{ $user->id }}">
+                            <th width="5%" class="text-center">#</th>
+                            <th>Tên đăng nhập</th>
+                            <th>Email</th>
+                            <th width="15%">Quyền</th>
+                            <th width="25%" class="text-center">Hành động</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    @forelse ($users as $index => $user)
+                        <tr>
+                            <td class="text-center">{{ $index + 1 }}</td>
+
+                            <td class="fw-semibold">
+                                <i class="fa-solid fa-user me-1 text-muted"></i>
+                                {{ $user->name }}
                             </td>
 
-                            <td>{{ $t }}</td>
-                            <td class="fw-semibold">{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
+                            <td>
+                                <i class="fa-solid fa-envelope me-1 text-muted"></i>
+                                {{ $user->email }}
+                            </td>
 
                             <td>
-                                <span class="badge bg-info text-dark">
-                                    {{ $user->role == false ? 'Quyền bình thường' : 'User' }}
+                                <span class="badge {{ $user->role ? 'bg-info' : 'bg-secondary' }}">
+                                    <i class="fa-solid fa-shield-halved me-1"></i>
+                                    {{ $user->role ? 'Admin' : 'Quyền thường' }}
                                 </span>
                             </td>
 
-                            <td>
-                                <a href="{{ route('admin.users.edit', $user->id) }}" 
-                                    class="btn btn-sm btn-primary btn-action">
-                                     Sửa
-                                </a>
+                            <td class="text-center">
+                                @if ($status !== 'trash')
+                                    <a href="{{ route('admin.users.edit', $user->id) }}"
+                                       class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                        Sửa
+                                    </a>
 
-                                <form action="{{ route('admin.users.destroy', $user->id) }}" 
-                                    method="POST" 
-                                    style="display:inline-block;">
-                                    @csrf
-                                    <button class="btn btn-sm btn-danger btn-action"
-                                            onclick="return confirm('Bạn có chắc muốn vô hiệu hóa?')">
-                                         Vô hiệu hóa
-                                    </button>
-                                </form>
+                                    <form action="{{ route('admin.users.destroy', $user->id) }}"
+                                          method="POST"
+                                          class="d-inline"
+                                          onsubmit="return confirm('Vô hiệu hóa user này?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-outline-warning">
+                                            <i class="fa-solid fa-user-slash"></i>
+                                            Vô hiệu hóa
+                                        </button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('admin.users.restore', $user->id) }}"
+                                          method="POST"
+                                          class="d-inline"
+                                          onsubmit="return confirm('Khôi phục user này?')">
+                                        @csrf
+                                        <button class="btn btn-sm btn-outline-success">
+                                            <i class="fa-solid fa-rotate-left"></i>
+                                            Khôi phục
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
-                    @endforeach
-                </tbody>
-
-            </table>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                <i class="fa-solid fa-inbox me-1"></i>
+                                Không có dữ liệu
+                            </td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
+    </div>
 
-    </form>
-
-    
-    <div class="d-flex justify-content-center mt-3">
-        {{ $users->links('pagination::bootstrap-5') }}
+    {{-- PAGINATION – LUÔN DÍNH ĐÁY --}}
+    <div class="mt-auto pt-3">
+        <div class="d-flex justify-content-center">
+            {{ $users->links('pagination::bootstrap-5') }}
+        </div>
     </div>
 
 </div>
-<script>
-document.getElementById('checkall').onclick = function() {
-    const checkboxes = document.querySelectorAll('input[name="list_check[]"]');
-    checkboxes.forEach(cb => cb.checked = this.checked);
-};
-</script>
 
 @endsection

@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Hash; // Cần thêm để sử dụng Hash::make
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    //Display a listing of the resource.
     public function index(Request $request)
     {
        // 1. Lấy tham số đầu vào
@@ -41,7 +39,7 @@ class UserController extends Controller
         // 5. Phân trang và thực thi query
         $users = $query->paginate(5)->withQueryString(); 
         
-        // 6. Tính toán đếm trạng thái: Tối ưu hóa bằng các phương thức tường minh
+        // 6. Tính toán đếm trạng thái
         $count_user_active = User::withoutTrashed()->count(); // Đếm ACTIVE (không bao gồm trash)
         $count_user_trash = User::onlyTrashed()->count();      // Đếm TRASH (đã xóa mềm)
         $count = [$count_user_active, $count_user_trash];
@@ -50,17 +48,13 @@ class UserController extends Controller
     }
 
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    //Show the form for creating a new resource.
     public function create()
     {
         return view('admin.users.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    //Store a newly created resource in storage.
     public function store(Request $request)
     {
         $request->validate([
@@ -78,26 +72,20 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'Tạo tài khoản thành công!');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    //Display the specified resource.
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    //Show the form for editing the specified resource.
     public function edit(string $id)
     {
           $user = User::findOrFail($id);
         return view('admin.users.edit', compact('user'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    //Update the specified resource in storage.
     public function update(Request $request, string $id)
     {
           $user = User::findOrFail($id);
@@ -122,63 +110,21 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'Cập nhật thành công!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    //Remove the specified resource from storage.
+    public function destroy($id)
     {
-        // Sử dụng findOrFail và delete() để kích hoạt Soft Deletes.
-        // Destroy() cũng hoạt động với Soft Deletes nhưng delete() là cách tiêu chuẩn hơn
-        $user = User::findOrFail($id); 
-        $user->delete();
-        
-        return redirect()->route('admin.users.index')->with('success', 'Xoá tài khoản thành công!');
+        User::where('id', $id)->delete();
+
+        return redirect()->route('admin.users.index')->with('success', 'Vô hiệu hóa user thành công!');
     }
 
-
-    public function action(Request $request)
-        {
-            $act = $request->input('act');
-            $list_check = $request->input('list_check');
-
-            // Không có checkbox nào được chọn
-            if (!$list_check) {
-                return redirect()->route('admin.users.index')
-                    ->with('error', 'Vui lòng chọn ít nhất một tài khoản.');
-            }
-
-            // Không cho thao tác lên chính mình
-            foreach ($list_check as $k => $id) {
-                if ($id == Auth::id()) {
-                    unset($list_check[$k]);
-                }
-            }
-
-            if (empty($list_check)) {
-                return redirect()->route('admin.users.index')
-                    ->with('error', 'Bạn không thể thao tác trên chính tài khoản của mình.');
-            }
-
-
-            if ($act == 'delete') {
-
-                User::destroy($list_check);
-
-                return redirect()->route('admin.users.index')
-                    ->with('status', 'Đã vô hiệu hóa các tài khoản đã chọn.');
-            }
-
-            if ($act == 'restore') {
-
-                User::onlyTrashed()
-                    ->whereIn('id', $list_check)
-                    ->restore();
-
-                return redirect()->route('admin.users.index')
-                    ->with('status', 'Đã khôi phục các tài khoản đã chọn.');
-            }
-
-            return redirect()->route('admin.users.index')
-                ->with('error', 'Hành động không hợp lệ.');
-}
+    // Khôi phục
+    public function restore($id) 
+    { 
+        $user = User::onlyTrashed()->where('id', $id)->first(); 
+        if (!$user) { 
+            return redirect()->back()->with('error', 'Tài khoản không tồn tại hoặc không nằm trong thùng rác.'); 
+        } 
+        $user->restore(); return redirect()->back()->with('success', 'Khôi phục tài khoản thành công!'); 
+    }
 }

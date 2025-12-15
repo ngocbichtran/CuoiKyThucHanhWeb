@@ -1,56 +1,80 @@
-@extends('layouts/admin')
+@extends('layouts.admin')
 
 @section('content')
 <div class="container">
-    <form action="{{ route('admin.product.store') }}" method="POST"
-          style="display: flex; flex-direction: column; max-width:400px; margin: 0 auto;">
-          
-        @csrf
-
-        <div class="form-group mb-3">
-            <label for="id">ID</label>
-            <input type="text" id="id" name="ID" class="form-control">
+    <div class="card shadow-sm border-0">
+        <!-- HEADER -->
+        <div class="card-header bg-white border-0 pb-0">
+            <h5 class="fw-bold text-dark mb-0">
+                ➕ Thêm sản phẩm
+            </h5>
         </div>
 
-        <div class="form-group mb-3">
-            <label for="cate">Loại</label>
+        <!-- BODY -->
+        <div class="card-body">
+            <form action="{{ route('admin.product.store') }}" method="POST">
+                @csrf
 
-            <select id="cate" name="CATE_ID" class="form-control">
-                <option value="">--Chọn loại--</option>
+                <div class="row g-4">
+                    <!-- CỘT TRÁI -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Loại sản phẩm</label>
+                            <select name="CATE_ID" class="form-control">
+                                <option value="">-- Chọn loại --</option>
+                                @foreach ($categoryList as $cate)
+                                    <option value="{{ $cate->ID }}">
+                                        {{ $cate->TYPE }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                @foreach ($categoryList as $cate)
-                    <option value="{{ $cate->ID }}">{{ $cate->TYPE }}</option>
-                @endforeach
-            </select>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Tên sản phẩm</label>
+                            <input type="text" name="NAME" class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Đơn giá</label>
+                            <input type="number" name="PRICE" class="form-control" >
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Trạng thái</label>
+                            <select name="ACTIVE_FLAG" class="form-control">
+                                <option value="1">Đã bày bán</option>
+                                <option value="0">Chưa bày bán</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- CỘT PHẢI -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Mô tả</label>
+                            <textarea name="DESCRIPTION" class="form-control"
+                                      rows="6"
+                                      placeholder="Mô tả chi tiết sản phẩm"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">IMG URL</label>
+                            <input type="text" name="IMG_URL"
+                                   class="form-control"
+                                  >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTION -->
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" class="btn btn-success px-5">
+                        💾 Lưu sản phẩm
+                    </button>
+                </div>
+            </form>
         </div>
-
-        <div class="form-group mb-3">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="NAME" class="form-control">
-        </div>
-
-        <div class="form-group mb-3">
-            <label for="desc">Mô tả</label>
-            <textarea id="desc" name="DESCRIPTION" class="form-control"></textarea>
-        </div>
-
-        <div class="form-group mb-3">
-            <label for="img">IMG URL</label>
-            <input type="text" id="img" name="IMG_URL" class="form-control">
-        </div>
-
-        <div class="form-group mb-3">
-            <label for="flag" >Trạng thái</label>
-            <select id="flag" name="ACTIVE_FLAG" class="form-control">
-                <option value="1">Đã bày bán</option>
-                <option value="0">Chưa bày bán</option>
-            </select>
-        </div>
-
-           <div style="display: flex; justify-content: center; width: 100%;">
-    <button type="submit" class="btn btn-success" style="width:200px;">Save</button>
     </div>
-
-    </form>
 </div>
 @endsection

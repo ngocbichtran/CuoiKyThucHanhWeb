@@ -8,9 +8,7 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    /** ================================
-     *  Hiển thị danh sách Category
-     *  ================================ */
+    //  Hiển thị danh sách Category
     public function index(Request $request)
     {
         $keyword = $request->keyword;
@@ -30,12 +28,12 @@ class CategoryController extends Controller
 
         // Phân trang
         $category = $query->orderBy('ID', 'DESC')
-                          ->paginate(7)
+                          ->paginate(6)
                           ->withQueryString();
 
         // Đếm số lượng
         $count = [
-            'active' => Category::count(),
+            'active' => Category::withoutTrashed()->count(),
             'trash'  => Category::onlyTrashed()->count(),
         ];
 
@@ -43,18 +41,14 @@ class CategoryController extends Controller
     }
 
 
-    /** ================================
-     *  Form tạo Category
-     *  ================================ */
+    //Form tạo Category
     public function create()
     {
         return view('admin.products.createCategory');
     }
 
 
-    /** ================================
-     *  Lưu Category mới
-     *  ================================ */
+    // Lưu Category mới
     public function store(Request $request)
     {
         $request->validate([
@@ -77,9 +71,7 @@ class CategoryController extends Controller
     }
 
 
-    /** ================================
-     *  Form sửa Category
-     *  ================================ */
+    //Form sửa Category
     public function edit(string $id)
     {
         $category = Category::findOrFail($id);
@@ -88,9 +80,7 @@ class CategoryController extends Controller
     }
 
 
-    /** ================================
-     *  Cập nhật Category
-     *  ================================ */
+    //Cập nhật Category
     public function update(Request $request, string $id)
     {
         $category = Category::findOrFail($id);
@@ -114,61 +104,30 @@ class CategoryController extends Controller
     }
 
 
-    /** ================================
-     *  Xóa (Soft Delete)
-     *  ================================ */
-    public function destroy(string $id)
-    {
-        try {
-            Category::where('ID', $id)->delete();
+    //Xóa (Soft Delete)
+    public function destroy($id)
+        {
+            $category = Category::findOrFail($id);
+
+            if ($category->products()->exists()) {
+                return redirect()
+                    ->route('admin.category.index')
+                    ->with('error', 'Danh mục đang có sản phẩm, không thể xoá.');
+            }
+
+            $category->delete();
 
             return redirect()
                 ->route('admin.category.index')
-                ->with('success', 'Xóa category thành công!');
-        } catch (\Exception $e) {
-            return redirect()
-                ->route('admin.category.index')
-                ->with('error', 'Không thể xoá vì category đang được sử dụng trong sản phẩm!');
-        }
-    }
-
-
-    /** ================================
-     *  Xử lý hàng loạt (delete / restore)
-     *  ================================ */
-    public function action(Request $request)
-    {
-        $act = $request->act;
-        $list_check = $request->list_check;
-
-        if (!$list_check) {
-            return redirect()
-                ->route('admin.products.category')
-                ->with('error', 'Vui lòng chọn ít nhất một danh mục.');
+                ->with('success', 'Đã đưa danh mục vào thùng rác.');
         }
 
-        // Vô hiệu hóa (xóa mềm)
-        if ($act == 'delete') {
-            Category::whereIn('ID', $list_check)->delete();
-
-            return redirect()
-                ->route('admin.products.category')
-                ->with('success', 'Đã đưa vào thùng rác.');
-        }
-
-        // Khôi phục
-        if ($act == 'restore') {
-            Category::onlyTrashed()
-                    ->whereIn('ID', $list_check)
-                    ->restore();
-
-            return redirect()
-                ->route('admin.products.category')
-                ->with('success', 'Đã khôi phục danh mục.');
-        }
-
-        return redirect()
-            ->route('admin.products.category')
-            ->with('error', 'Hành động không hợp lệ.');
+      public function restore($id) 
+    { 
+        $category = Category::onlyTrashed()->where('id', $id)->first(); 
+        if (!$category) { 
+            return redirect()->back()->with('error', 'Loai sản phẩm không tồn tại hoặc không nằm trong thùng rác.'); 
+        } 
+        $category->restore(); return redirect()->back()->with('success', 'Khôi phục loại sản phẩm thành công!'); 
     }
 }

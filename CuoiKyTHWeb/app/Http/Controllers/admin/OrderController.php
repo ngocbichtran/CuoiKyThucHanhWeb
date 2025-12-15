@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,9 +8,8 @@ use App\Models\Order;
 
 class OrderController extends Controller
 {
-    // ============================
+
     // HIỂN THỊ DANH SÁCH
-    // ============================
     public function index(Request $request)
     {
         $keyword  = $request->input('keyword');
@@ -36,7 +35,7 @@ class OrderController extends Controller
         }
 
         // Phân trang
-        $orders = $query->orderBy('id', 'DESC')->paginate(5)->withQueryString();
+        $orders = $query->orderBy('id', 'DESC')->paginate(6)->withQueryString();
 
         // Đếm đơn theo trạng thái
         $count = [
@@ -47,9 +46,7 @@ class OrderController extends Controller
         return view('admin.orders.index', compact('orders', 'keyword', 'delivery', 'count'));
     }
 
-    // ============================
     // TẠO ĐƠN HÀNG (SHOP)
-    // ============================
     public function store(Request $request)
     {
         $order = Order::create([
@@ -67,18 +64,14 @@ class OrderController extends Controller
         ]);
     }
 
-    // ============================
     // TRANG CHI TIẾT
-    // ============================
     public function show(string $id)
     {
         $order = Order::findOrFail($id);
         return view('admin.orders.show', compact('order'));
     }
 
-    // ============================
     // CẬP NHẬT TRẠNG THÁI
-    // ============================
     public function updateStatus(Request $request, $id)
     {
         $order = Order::findOrFail($id);
@@ -89,9 +82,7 @@ class OrderController extends Controller
         return back()->with('success', 'Cập nhật trạng thái thành công!');
     }
 
-    // ============================
     // UPDATE BẰNG FORM
-    // ============================
     public function update(Request $request, string $id)
     {
         $order = Order::findOrFail($id);
@@ -102,40 +93,10 @@ class OrderController extends Controller
         return back()->with('success', 'Cập nhật trạng thái thành công!');
     }
 
-    // ============================
-    // XÓA MỀM
-    // ============================
+    //XÓA MỀM
     public function destroy(string $id)
     {
         Order::findOrFail($id)->delete();
         return back()->with('success', 'Đã chuyển đơn vào thùng rác!');
-    }
-
-    // ============================
-    // BULK ACTIONS
-    // ============================
-    public function action(Request $request)
-    {
-        $act        = $request->input('act');
-        $list_check = $request->input('list_check');
-
-        if (!$list_check) {
-            return back()->with('error', 'Vui lòng chọn ít nhất một đơn hàng.');
-        }
-
-        if ($act === 'delete') {
-            Order::destroy($list_check);
-            return back()->with('success', 'Đã chuyển các đơn hàng vào thùng rác.');
-        }
-
-        if ($act === 'restore') {
-            Order::onlyTrashed()
-                ->whereIn('id', $list_check)
-                ->restore();
-
-            return back()->with('success', 'Đã khôi phục các đơn hàng.');
-        }
-
-        return back()->with('error', 'Hành động không hợp lệ.');
     }
 }

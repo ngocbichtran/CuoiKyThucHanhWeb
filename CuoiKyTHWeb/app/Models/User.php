@@ -19,6 +19,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'google_id',
     ];
 
     protected $hidden = [
@@ -38,6 +39,6 @@ class User extends Authenticatable
      */
     public function orders(): HasMany
     {
-        return $this->hasMany(Order::class, 'USER_ID', 'id');
+        return $this->hasMany(Order::class, 'user_id', 'id');
     }
 }

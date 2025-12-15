@@ -1,180 +1,143 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html class="light" lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAPYSHOP</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CapyElectroShop</title>
 
-    <style>
-    /* 1. Định dạng chung cho tiêu đề */
-    h1 {
-        text-align: center;
-        margin-bottom: 30px;
-    }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 
-    /* 2. Định dạng Grid Container */
-    .product-grid {
-        display: grid; /* Sử dụng CSS Grid */
-        /* Chia thành 3 cột có chiều rộng bằng nhau. */
-        grid-template-columns: repeat(3, 1fr); 
-        gap: 20px; /* Tạo khoảng cách 20px giữa các cột và hàng */
-        max-width: 1200px; /* Giới hạn chiều rộng tối đa */
-        margin: 0 auto; /* Căn giữa */
-        padding: 0 20px;
-    }
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#135bec",
+            "background-light": "#f6f6f8",
+            "background-dark": "#101622",
+          },
+          fontFamily: {
+            display: ["Inter", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px",
+          },
+        },
+      },
+    };
+  </script>
 
-    /* 3. Định dạng từng sản phẩm */
-    .product-card {
-        border: 1px solid #ccc;
-        padding: 15px;
-        text-align: center;
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     }
-
-    .product-card img {
-        width: 50%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng thẻ */
-        height: 50%;
-        display: block;
-        margin:auto;
-    }
-
-    .product-card h3 {
-        margin-top: 0;
-        margin-bottom: 5px;
-    }
-
-    .product-card p {
-        margin-bottom: 15px;
-        font-weight: bold;
-        color: #e53935;
-    }
-
-    .product-card button {
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        padding: 8px 15px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 14px;
-        cursor: pointer;
-        border-radius: 4px;
-    }
-    
-</style>
+  </style>
 </head>
 
-<body>
+<body class="bg-background-light dark:bg-background-dark text-[#0d121b] dark:text-[#e0e0e0]">
 
-<h1 style="text-align:center;">CAPYSHOP</h1>
+<header class="sticky top-0 z-50 border-b border-[#e7ebf3]
+               bg-white/90 backdrop-blur-md
+               dark:border-gray-800 dark:bg-gray-900/90">
+    <div class="mx-auto flex h-16 max-w-[1200px]
+                items-center justify-between px-4 sm:px-6 lg:px-8">
 
-<main class="product-grid">
+        {{-- Logo --}}
+        <a href="{{ route('shop') }}" class="flex items-center gap-2">
+            <div class="flex size-8 items-center justify-center
+                        rounded-lg bg-primary text-white">
+                <span class="material-symbols-outlined">bolt</span>
+            </div>
+            <h1 class="text-xl font-bold dark:text-white">
+                CapyElectroShop
+            </h1>
+        </a>
 
-<?php foreach ($products as $product): ?>
-    <div class="product-card"
-        data-id="<?= $product->ID ?>"
-        data-name="<?= htmlspecialchars($product->NAME) ?>"
-        data-price="<?= $product->PRICE ?>"
-    >
+        {{-- Right --}}
+        <div class="flex items-center gap-4">
 
-        <img src="<?= $product->IMG_URL ?>" width="250">
+            @auth
+            {{-- User --}}
+            <div class="flex items-center gap-2 px-3 py-1
+                        rounded-full bg-gray-100 dark:bg-gray-800">
+                <span class="material-symbols-outlined text-gray-500 text-[22px]">
+                    account_circle
+                </span>
+                <span class="text-sm font-medium truncate max-w-[120px]">
+                    {{ Str::words(Auth::user()->name, 2, '') }}
+                </span>
+            </div>
 
-        <h3><?= htmlspecialchars($product->NAME) ?></h3>
+            {{-- Trang chủ --}}
+            <a href="{{ route('shop') }}"
+              class="flex items-center gap-1 px-4 py-2
+                      rounded-lg bg-yellow-100 text-yellow-700
+                      hover:bg-yellow-200 transition">
+                <span class="material-symbols-outlined text-[20px]">
+                    home
+                </span>
+                Trang chủ
+            </a>
 
-        <p>Giá: <?= number_format($product->PRICE, 0, ',', '.') ?> VNĐ</p>
+            {{-- Đơn hàng --}}
+            <a href="{{ route('cart') }}"
+               class="flex items-center gap-1 px-4 py-2
+                      rounded-lg bg-blue-50 text-primary hover:bg-blue-100">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                Đơn hàng
+            </a>
 
-        <button onclick="openOrderModal(<?= $product->ID ?>)">ĐẶT HÀNG</button>
+            {{-- Đăng xuất --}}
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit"
+                    class="flex items-center gap-1 px-4 py-2
+                           rounded-lg bg-red-50 text-red-600 hover:bg-red-100">
+                    <span class="material-symbols-outlined">logout</span>
+                    Đăng xuất
+                </button>
+            </form>
+            @endauth
+
+            @guest
+            <a href="{{ route('login') }}"
+               class="px-4 py-2 rounded-lg bg-primary text-white">
+                Đăng nhập
+            </a>
+            @endguest
+
+        </div>
     </div>
-<?php endforeach; ?>
+</header>
 
-<?= $products->links() ?>
-
+<!-- Main -->
+<main>
+@yield('content')
 </main>
 
-<!-- MODAL -->
-<div id="orderModal" 
-    class="modal" 
-    style="
-        /* LỚP PHỦ NỀN VÀ CĂN GIỮA TUYỆT ĐỐI */
-        display: none; 
-        position: fixed; 
-        z-index: 1000; 
-        left: 0; 
-        top: 0; 
-        width: 100%; 
-        height: 100%; 
-        overflow: auto; 
-        background-color: rgba(0,0,0,0.4); 
-        
-        /* Kích hoạt Flexbox để căn giữa nội dung */
-        align-items: center; 
-        justify-content: center;
-    "
->
-    <div class="modal-content" 
-        style="
-            /* KHUNG NỘI DUNG */
-            background-color: #fefefe; 
-            padding: 20px; 
-            border: 1px solid #888; 
-            max-width: 400px; /* Chiều rộng tối đa */
-            width: 90%; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-        "
-    >
-
-        <h2>Thông tin đặt hàng</h2>
-
-        <h3 id="modalProductName"></h3>
-        <p id="modalProductPrice"></p>
-
-        <form id="orderForm" action="<?= route('shop.order') ?>" method="POST"
-            style="
-                /* CĂN CHỈNH NÚT VÀ Ô NHẬP */
-                margin-top: 15px;
-                margin-bottom: 15px;
-                display: flex; 
-                align-items: center; 
-                gap: 10px; 
-            "
-        >
-            <?= csrf_field() ?>
-
-            <input type="hidden" name="product_id" id="productId">
-            <input type="hidden" name="don_gia" id="productPrice">
-
-            <label style="white-space: nowrap;">Số lượng:</label>
-            <input type="number" name="so_luong" value="1" min="1" style="width: 80px;">
-
-            <button type="submit">Xác nhận đặt hàng</button>
-        </form>
-
-        <button onclick="closeOrderModal()">Đóng</button>
+<!-- Footer -->
+<footer class="border-t border-[#e7ebf3] bg-white py-12 dark:border-gray-800 dark:bg-gray-900">
+  <div class="mx-auto max-w-[1200px] px-4 text-center">
+    <div class="mb-4 flex justify-center items-center gap-2">
+      <div class="flex size-8 items-center justify-center rounded-lg bg-primary text-white">
+        <span class="material-symbols-outlined">bolt</span>
+      </div>
+      <span class="text-xl font-bold dark:text-white">ElectroShop</span>
     </div>
-</div>
-
-<script>
-function openOrderModal(id) {
-    let card = document.querySelector(`.product-card[data-id="${id}"]`);
-
-    let name = card.getAttribute("data-name");
-    let price = card.getAttribute("data-price");
-
-    document.getElementById('modalProductName').textContent = name;
-    document.getElementById('modalProductPrice').textContent =
-        "Giá: " + Number(price).toLocaleString('vi-VN') + " VNĐ";
-
-    document.getElementById('productId').value = id;
-    document.getElementById('productPrice').value = price;
-
-    document.getElementById('orderModal').style.display = "flex";
-}
-
-function closeOrderModal() {
-    document.getElementById('orderModal').style.display = "none";
-}
-</script>
+    <p class="mt-8 text-sm text-gray-500">© DH52200637_Nguyễn Trí Hào - DH52200383_Trần Ngọc Bích.</p>
+  </div>
+</footer>
 
 </body>
 </html>

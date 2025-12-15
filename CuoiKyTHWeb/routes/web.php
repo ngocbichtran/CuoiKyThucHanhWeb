@@ -1,59 +1,67 @@
 <?php
-use App\Http\Controllers\GoogleController; //Route de dang nhap bang google
+
 use Illuminate\Support\Facades\Route;
-use App\Models\Category;
-use App\Http\Controllers\admin\UserController;
-use App\Http\Controllers\admin\ProductController;
-use App\Http\Controllers\admin\CategoryController;
-use App\Http\Controllers\admin\OrderController;
-// Route chính
-Route::get('/', function () {
-    return view('admin/dashboard');
-})->middleware('auth') -> name('homes');
+use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ShopController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\admin\{
+    UserController,
+    ProductController,
+    CategoryController,
+    OrderController
+};
 
-
-// Đăng nhập đăng ký
+/*
+|--------------------------------------------------------------------------
+| AUTH
+|--------------------------------------------------------------------------
+*/
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-// 
+/*
+|--------------------------------------------------------------------------
+| DASHBOARD (TRANG CHÍNH)
+|--------------------------------------------------------------------------
+| BẮT BUỘC gọi controller để có dữ liệu
+*/
+Route::get('/', [DashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('dashboard');
 
-Route::get('/dashboard', function () {
-        return view('admin/dashboard');
-})->middleware('auth') -> name('dashboard');
-
-
-//Route de dang nhap bang google
+/*
+|--------------------------------------------------------------------------
+| GOOGLE LOGIN
+|--------------------------------------------------------------------------
+*/
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.login');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
-
-
-//Hiện database
-Route::prefix('admin')->name('admin.')->group(function () {
-
-    Route::resource('category', CategoryController::class);
-    Route::post('category/action', [UserController::class, 'action'])->name('category.action');
-
-    Route::resource('users', UserController::class);
-    Route::post('user/action', [UserController::class, 'action'])->name('users.action');
-
-    Route::resource('product', ProductController::class);
-    Route::post('product/action', [ProductController::class, 'action'])->name('product.action');
-
-    Route::resource('orders', App\Http\Controllers\admin\OrderController::class);
+/*
+|--------------------------------------------------------------------------
+| ADMIN
+|--------------------------------------------------------------------------
+*/
+Route::prefix('admin')->middleware('auth') ->name('admin.') ->group(function () {
+        Route::resource('users', UserController::class);
+        Route::resource('product', ProductController::class);
+        Route::resource('category', CategoryController::class);
+        Route::resource('orders', OrderController::class);
 });
-
+Route::post('admin/users/restore/{id}', [UserController::class, 'restore'])->name('admin.users.restore');
+Route::post('admin/category/restore/{id}', [CategoryController::class, 'restore'])->name('admin.category.restore');
+Route::post('admin/product/restore/{id}', [ProductController::class, 'restore'])->name('admin.product.restore');
 Route::put('orders/{id}/update-status', [OrderController::class, 'updateStatus'])
     ->name('admin.orders.updateStatus');
-// //Route shop (trang shop)
-use App\Http\Controllers\ShopController;
-
-// 1. ROUTE CHÍNH: Hiển thị danh sách sản phẩm
+/*
+|--------------------------------------------------------------------------
+| SHOP
+|--------------------------------------------------------------------------
+*/
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
-
-
 Route::post('/order', [ShopController::class, 'order'])->name('shop.order');
-
-  
+Route::get('/cart', [ShopController::class, 'cart'])
+    ->middleware('auth')
+    ->name('cart');
