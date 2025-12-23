@@ -3,14 +3,14 @@
 @section('content')
 <div class="container">
     <div class="card shadow-sm border-0">
-   
+        <!-- HEADER -->
         <div class="card-header bg-white border-0 pb-0">
             <h5 class="fw-bold text-dark mb-0">
                 ➕ Thêm sản phẩm
             </h5>
         </div>
 
-    
+        <!-- BODY -->
         <div class="card-body">
             <form action="{{ route('admin.product.store') }}" method="POST">
                 @csrf
@@ -67,6 +67,7 @@
                     </div>
                 </div>
 
+                <!-- ACTION -->
                 <div class="d-flex justify-content-center mt-4">
                     <button type="submit" class="btn btn-success px-5">
                         💾 Lưu sản phẩm

@@ -2,7 +2,9 @@
 
 @section('content')
 
-<!--Thông báo đặt hàng thành công-->
+<!-- {{-- Thông báo đặt hàng thành công --}} -->
+
+
 
 <section class="bg-white py-12 dark:bg-background-dark/50">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
@@ -33,6 +35,7 @@
                        transition-all duration-300 hover:-translate-y-1 hover:shadow-lg
                        dark:border-gray-800 dark:bg-gray-900">
 
+                <!-- {{-- Ảnh --}} -->
                 <div class="aspect-square bg-gray-100 p-4">
                     <img
                         src="{{ asset($product->IMG_URL) }}"
@@ -40,6 +43,7 @@
                         class="h-full w-full object-contain transition group-hover:scale-105">
                 </div>
 
+                <!-- {{-- Nội dung --}} -->
                 <div class="flex flex-1 flex-col p-4">
                     <h3 class="mb-2 line-clamp-2 font-semibold dark:text-white">
                         {{ $product->NAME }}
@@ -50,7 +54,7 @@
                             {{ number_format($product->PRICE) }} đ
                         </span>
 
-                        <!--  Add to cart  -->
+                        <!-- {{-- Add to cart --}} -->
                         <form action="{{ route('shop.order') }}" method="POST" class="flex items-center gap-2">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->ID }}">
@@ -77,6 +81,7 @@
             @endforeach
         </div>
 
+        {{-- Phân trang --}}
         <div class="mt-10">
             {{ $products->links() }}
         </div>

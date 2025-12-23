@@ -4,7 +4,7 @@
 <div class="container py-3">
     <div class="card shadow-sm border-0" style="max-width: 500px; margin: 0 auto;">
 
-        <div class="card-header bg-white border-0">
+        <div class="card-header border-0">
             <h5 class="fw-bold mb-0">➕ Thêm người dùng</h5>
         </div>
 
@@ -14,33 +14,24 @@
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">User Name</label>
-                    <input type="text"
-                           name="USER_NAME"
-                           class="form-control"
-                          >
+                    <input type="text" name="name" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Password</label>
-                    <input type="password"
-                           name="PASSWORD"
-                           class="form-control"
-                           >
+                    <input type="password" name="password" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Email</label>
-                    <input type="email"
-                           name="EMAIL"
-                           class="form-control"
-                           >
+                    <input type="email" name="email" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Quyền hạn</label>
-                    <select name="ACTIVE_FLAG" class="form-control">
-                        <option value="1">Admin</option>
-                        <option value="0">Người dùng thường</option>
+                    <select name="role" class="form-control">
+                        <option value="user" selected>User</option>
+                        <option value="admin">Admin</option>
                     </select>
                 </div>
 

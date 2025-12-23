@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <!-- Tìm kiếm và cảnh báo -->
+        <!-- SEARCH + ALERT -->
         <div class="d-flex mb-3">
             <form method="GET" action="{{ route('admin.category.index') }}" class="d-flex">
                 <input type="text"
@@ -53,7 +53,7 @@
         </div>
     </div>
 
-    <!-- TABLE -->
+    <!-- TABLE (CO GIÃN) -->
     <div class="card shadow-sm flex-grow-1">
         <div class="card-body p-0 d-flex flex-column">
 
@@ -129,7 +129,7 @@
         </div>
     </div>
 
-    <!-- Phân trang -->
+    <!-- PAGINATION – LUÔN DÍNH ĐÁY -->
     <div class="mt-auto pt-3">
         <div class="d-flex justify-content-center">
             {{ $category->links('pagination::bootstrap-5') }}

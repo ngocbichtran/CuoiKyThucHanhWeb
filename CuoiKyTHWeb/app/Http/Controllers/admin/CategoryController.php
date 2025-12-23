@@ -21,7 +21,7 @@ class CategoryController extends Controller
             $query = Category::query();
         }
 
-        // Tìm kiếm theo TYPE nếu có nhập keyword
+        // Tìm kiếm
         if ($keyword) {
             $query->where('TYPE', 'LIKE', "%$keyword%");
         }
@@ -74,7 +74,6 @@ class CategoryController extends Controller
     //Form sửa Category
     public function edit(string $id)
     {
-        // Lấy category theo ID
         $category = Category::findOrFail($id);
 
         return view('admin.products.editCategory', compact('category'));
@@ -110,7 +109,6 @@ class CategoryController extends Controller
         {
             $category = Category::findOrFail($id);
 
-             //Kiểm tra category có sản phẩm hay không
             if ($category->products()->exists()) {
                 return redirect()
                     ->route('admin.category.index')

@@ -61,7 +61,7 @@ class ProductController extends Controller
             'NAME'        => 'required|string|max:190',
             'DESCRIPTION' => 'nullable|string',
              'PRICE'       => 'required|integer',
-            'IMG_URL'     => 'nullable|string|max:200',
+            'IMG_URL'     => 'nullable|string|max:2000',
             'ACTIVE_FLAG' => 'required|integer|in:0,1',
         ]);
 
@@ -98,7 +98,7 @@ class ProductController extends Controller
             'NAME'        => 'required|string|max:190',
             'DESCRIPTION' => 'nullable|string',
             'PRICE'       => 'required|integer',
-            'IMG_URL'     => 'nullable|string|max:200',
+            'IMG_URL'     => 'nullable|string|max:2000',
             'ACTIVE_FLAG' => 'required|integer|in:0,1',
         ]);
 

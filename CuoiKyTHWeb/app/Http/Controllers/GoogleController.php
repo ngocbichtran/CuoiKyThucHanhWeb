@@ -25,11 +25,16 @@ class GoogleController extends Controller
                 'name' => $googleUser->getName(),
                 'google_id' => $googleUser->getId(),
                 'password' => bcrypt(uniqid()),
+                'role' => 'user',
             ]
         );
 
         auth()->login($user);
 
-        return redirect('dashboard');
+            if ($user->role === 'admin') {
+        return redirect('/dashboard');
+    }
+
+    return redirect('/shop');
     }
 }

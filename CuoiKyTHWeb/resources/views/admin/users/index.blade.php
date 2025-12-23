@@ -5,6 +5,7 @@
 <div class="container-fluid px-4 py-4 d-flex flex-column"
      style="min-height: calc(100vh - 100px);">
 
+    {{-- HEADER --}}
     <div>
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="fw-bold text-primary mb-0">
@@ -26,6 +27,7 @@
                 </a>
             </div>
 
+            {{-- SEARCH --}}
             <form method="GET" action="{{ route('admin.users.index') }}" class="d-flex">
                 <input type="text"
                        name="keyword"
@@ -39,6 +41,7 @@
             </form>
         </div>
 
+        {{-- ALERT --}}
         @foreach (['error' => 'danger', 'success' => 'success'] as $msg => $type)
             @if (session($msg))
                 <div class="alert alert-{{ $type }} py-2 mb-3">
@@ -49,6 +52,7 @@
         @endforeach
     </div>
 
+    {{-- TABLE (CO GIÃN) --}}
     <div class="card shadow-sm flex-grow-1">
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -79,9 +83,9 @@
                             </td>
 
                             <td>
-                                <span class="badge {{ $user->role ? 'bg-info' : 'bg-secondary' }}">
+                                <span class="badge {{  $user->role === 'admin' ? 'bg-info' : 'bg-secondary' }}">
                                     <i class="fa-solid fa-shield-halved me-1"></i>
-                                    {{ $user->role ? 'Admin' : 'Quyền thường' }}
+                                   {{ $user->role === 'admin' ? 'admin' : 'user' }}
                                 </span>
                             </td>
 
@@ -132,6 +136,7 @@
         </div>
     </div>
 
+    {{-- PAGINATION – LUÔN DÍNH ĐÁY --}}
     <div class="mt-auto pt-3">
         <div class="d-flex justify-content-center">
             {{ $users->links('pagination::bootstrap-5') }}

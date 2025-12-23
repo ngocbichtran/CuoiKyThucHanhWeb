@@ -4,9 +4,10 @@
 <div class="container py-5">
     <h3 class="mb-4 fw-bold text-dark">Bảng điều khiển tổng quan</h3>
 
+    <!-- Khu vực 1: ANALYTICS - Các Chỉ Số Chính -->
     <div class="row mb-5">
         
-        <!-- Tổng đơn hàng thành công -->
+        <!-- Tổng Đơn Hàng Thành Công -->
         <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-3">
             <div class="card bg-primary text-white shadow-sm h-100">
                 <div class="card-header border-0 fw-bold">ĐƠN HÀNG THÀNH CÔNG</div>
@@ -22,7 +23,7 @@
             </div>
         </div>
 
-        <!-- Tổng sản phẩm đang bán -->
+        <!-- Tổng Sản Phẩm Đang Bán -->
         <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-3">
             <div class="card bg-success text-white shadow-sm h-100">
                 <div class="card-header border-0 fw-bold">TỔNG SẢN PHẨM</div>
@@ -36,7 +37,8 @@
             </div>
         </div>
 
-        <!-- Tổng người dùng  -->
+        
+        <!-- Tổng Người Dùng  -->
         <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-3">
             <div class="card bg-info text-white shadow-sm h-100">
                 <div class="card-header border-0 fw-bold">NGƯỜI DÙNG</div>
@@ -50,6 +52,8 @@
             </div>
         </div>
     </div>
+    <!-- end analytic  -->
+
    
         </div>
     </div>

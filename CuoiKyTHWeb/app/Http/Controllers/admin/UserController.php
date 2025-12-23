@@ -55,22 +55,27 @@ class UserController extends Controller
     }
 
     //Store a newly created resource in storage.
-    public function store(Request $request)
+   public function store(Request $request)
     {
         $request->validate([
-            'name'      => 'required|string|max:255',
-            'email'     => 'required|email|unique:users,email', // Đảm bảo email là duy nhất
-            'password'  => 'required|min:8',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|min:8',
+            'role'     => 'required|in:admin,user',
         ]);
 
         User::create([
-            'name'      => $request->name,
-            'email'     => $request->email,
-            'password'  => Hash::make($request->password), // mã hoá mật khẩu
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+            'role'     => $request->role, 
         ]);
 
-        return redirect()->route('admin.users.index')->with('success', 'Tạo tài khoản thành công!');
+        return redirect()
+            ->route('admin.users.index')
+            ->with('success', 'Tạo tài khoản thành công!');
     }
+
 
     //Display the specified resource.
     public function show(string $id)
@@ -88,27 +93,30 @@ class UserController extends Controller
     //Update the specified resource in storage.
     public function update(Request $request, string $id)
     {
-          $user = User::findOrFail($id);
+        $user = User::findOrFail($id);
 
         $request->validate([
-            'name'      => 'required|string|max:255',
-            // Đảm bảo email là duy nhất, trừ chính user này
-            'email'     => 'required|email|unique:users,email,' . $user->id, 
-            'password'  => 'nullable|min:8', // Đặt min length cho mật khẩu nếu có nhập
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email,' . $user->id,
+            'role'     => 'required|in:admin,user',
+            'password' => 'nullable|min:8',
         ]);
 
         $user->name  = $request->name;
         $user->email = $request->email;
+        $user->role  = $request->role;
 
-        // nếu có mật khẩu mới → cập nhật
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
 
         $user->save();
 
-        return redirect()->route('admin.users.index')->with('success', 'Cập nhật thành công!');
+        return redirect()
+            ->route('admin.users.index')
+            ->with('success', 'Cập nhật thành công!');
     }
+
 
     //Remove the specified resource from storage.
     public function destroy($id)

@@ -53,19 +53,22 @@
     <div class="mx-auto flex h-16 max-w-[1200px]
                 items-center justify-between px-4 sm:px-6 lg:px-8">
 
+        {{-- Logo --}}
         <a href="{{ route('shop') }}" class="flex items-center gap-2">
             <div class="flex size-8 items-center justify-center
                         rounded-lg bg-primary text-white">
                 <span class="material-symbols-outlined">bolt</span>
             </div>
             <h1 class="text-xl font-bold dark:text-white">
-                CapyShop
+                CapyElectroShop
             </h1>
         </a>
 
+        {{-- Right --}}
         <div class="flex items-center gap-4">
 
             @auth
+            {{-- User --}}
             <div class="flex items-center gap-2 px-3 py-1
                         rounded-full bg-gray-100 dark:bg-gray-800">
                 <span class="material-symbols-outlined text-gray-500 text-[22px]">
@@ -76,6 +79,7 @@
                 </span>
             </div>
 
+            {{-- Trang chủ --}}
             <a href="{{ route('shop') }}"
               class="flex items-center gap-1 px-4 py-2
                       rounded-lg bg-yellow-100 text-yellow-700
@@ -86,6 +90,7 @@
                 Trang chủ
             </a>
 
+            {{-- Đơn hàng --}}
             <a href="{{ route('cart') }}"
                class="flex items-center gap-1 px-4 py-2
                       rounded-lg bg-blue-50 text-primary hover:bg-blue-100">
@@ -93,6 +98,7 @@
                 Đơn hàng
             </a>
 
+            {{-- Đăng xuất --}}
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit"

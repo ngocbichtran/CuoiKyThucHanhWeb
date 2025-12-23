@@ -4,16 +4,19 @@
 <div class="container">
     <div class="card shadow-sm border-0" style="max-width: 500px; margin: 0 auto;">
 
+        <!-- HEADER -->
         <div class="card-header border-0">
             <h5 class="fw-bold mb-0">Cập nhật người dùng</h5>
          
         </div>
 
+        <!-- BODY -->
         <div class="card-body">
             <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
+                {{-- HIỂN THỊ LỖI --}}
                 @if ($errors->any())
                     <div class="alert alert-danger mb-4">
                         <ul class="mb-0 ps-3">
@@ -47,6 +50,18 @@
                            class="form-control"
                            value="{{ old('email', $user->email) }}">
                 </div>
+                 <div class="mb-3">
+                    <label class="form-label fw-semibold">Quyền hạn</label>
+                    <select name="role" class="form-control">
+                        <option value="admin" {{ $user->role === 'admin' ? 'selected' : '' }}>
+                            Admin
+                        </option>
+                        <option value="user" {{ $user->role === 'user' ? 'selected' : '' }}>
+                            User
+                        </option>
+                    </select>
+                </div>
+
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">
@@ -58,6 +73,8 @@
                            placeholder="Để trống nếu không đổi mật khẩu">
                 </div>
 
+
+                <!-- ACTION -->
                 <div class="d-flex justify-content-between mt-4">
                     <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary">
                         Quay lại
